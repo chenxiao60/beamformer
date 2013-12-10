@@ -7,7 +7,6 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
-
 library UNISIM;
 use UNISIM.VComponents.all;
 
@@ -297,13 +296,13 @@ begin
 end process;
 			
 ----************* Output Selector (through MUX) *************--
-output_selector : process (i_reset, us_clock)
+output_selector : process (i_reset, us_clock, i_clock)
 begin
 	
 	if (i_reset = '1') then
 		mux_counter <= 0;
 	
-	elsif(clockpulses = 60) then
+	elsif(clockpulses = 40) then
 			o_channel <= (OTHERS => '1');
 	
 	elsif (rising_edge (us_clock)) then
