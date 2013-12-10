@@ -303,6 +303,9 @@ begin
 	if (i_reset = '1') then
 		mux_counter <= 0;
 	
+	elsif(clockpulses = 60) then
+			o_channel <= (OTHERS => '1');
+	
 	elsif (rising_edge (us_clock)) then
 		
 		--Selects which DAC to output to (cycles every 5 us)
@@ -310,42 +313,27 @@ begin
 		if(mux_counter = 0) then
 			o_dataout <= data_r_0 + data_l_4;
 			mux_counter <= mux_counter + 1;		
-			o_channel <= (0=>'1', OTHERS=>'0');
-			if(clockpulses = 60) then
-				o_channel <= (OTHERS => '0');
-			end if;
-			
+			o_channel <= (0=>'0', OTHERS=>'1');
+
 		elsif (mux_counter = 1) then 
 			o_dataout <= data_r_1 + data_l_3;
 			mux_counter <= mux_counter + 1;
-			o_channel <= (1=>'1', OTHERS=>'0');
-			if(clockpulses = 60) then
-				o_channel <= (OTHERS => '0');
-			end if;
-		
+			o_channel <= (1=>'0', OTHERS=>'1');
+
 		elsif (mux_counter = 2) then
 			o_dataout <= data_r_2 + data_l_2;		
 			mux_counter <= mux_counter + 1;
-			o_channel <= (2=>'1', OTHERS=>'0');
-			if(clockpulses = 60) then
-				o_channel <= (OTHERS => '0');
-			end if;
+			o_channel <= (2=>'0', OTHERS=>'1');
 		
 		elsif (mux_counter = 3) then
 			o_dataout <= data_r_3 + data_l_1;
 			mux_counter <= mux_counter + 1;
-			o_channel <= (3=>'1', OTHERS=>'0');
-			if(clockpulses = 60) then
-				o_channel <= (OTHERS => '0');
-			end if;
+			o_channel <= (3=>'0', OTHERS=>'1');
 		
 		elsif (mux_counter = 4) then
 			o_dataout <= data_r_4 + data_l_0;		
 			mux_counter <= 0;
-			o_channel <= (4=>'1', OTHERS=>'0');
-			if(clockpulses = 60) then
-				o_channel <= (OTHERS => '0');
-			end if;
+			o_channel <= (4=>'0', OTHERS=>'1');
 
 		end if;
 		
