@@ -1,6 +1,7 @@
 -----------------------------------------------------------------------------------
 -- Created by Sam Rohrer                                                        --
--- Acesses memory for test data                                                 --
+-- Beamforms in the nearfield based on a generic for distance                   -- 
+-- Accesses memory for test data                                                --
 -- Uses cellular RAM                                                            -- 
 ----------------------------------------------------------------------------------
 library IEEE;

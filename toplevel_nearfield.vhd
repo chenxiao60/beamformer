@@ -1,6 +1,7 @@
 ----------------------------------------------------------------------------------
 -- Created by Sam Rohrer                                                        --
 -- Beamforms in the nearfield based on a generic for distance                   -- 
+-- This is the toplevel file (to configure the FPGA)                            --
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -12,7 +13,6 @@ entity toplevel_nearfield is
 	sys_clock           : in     std_logic; -- system clk signal
 	swt_distance        : in     std_logic_vector (4 downto 0); -- switch 0 to 4
 	but_reset           : in     std_logic ; --Button D
-	--pin_sampleclock     : in     std_logic ; -- JB 7
 	
 	pin_dataout         :    out std_logic_vector (7 downto 0); -- JA 0 to 7 
 	pin_channel         :    out std_logic_vector (4 downto 0); -- JB 0 to 4
@@ -57,10 +57,10 @@ architecture Behavioral of toplevel_nearfield is
 	
 	signal clockpulses     : integer range 0 to 2200;
 	
-	signal pin_sampleclock : std_logic;
+	signal sample_clock    : std_logic;
 	
-	signal sig_datain_r    : std_logic_vector(7 downto 0);
-	signal sig_datain_l    : std_logic_vector(7 downto 0);
+	signal sig_datain_r    : std_logic_vector (7 downto 0);
+	signal sig_datain_l    : std_logic_vector (7 downto 0);
 
 	--**************** End User Signals ***********--
 
@@ -69,18 +69,17 @@ begin
 	--*************** User Processes **************--
 	sampleclock_division : process(but_reset, sys_clock)
 	begin
-			if (but_reset = '1') then
-				clockpulses                 <= 0;
-				pin_sampleclock             <= '0';
+		if (but_reset = '1') then
+			clockpulses                 <= 0;
+			sample_clock                <= '0';
 
-			elsif(rising_edge(sys_clock)) then
-				clockpulses                 <= clockpulses + 1 ;
-				if(clockpulses = 2200) then 
-					pin_sampleclock         <= Not pin_sampleclock;
-					clockpulses             <= 0;
-				end if;
-			
+		elsif(rising_edge(sys_clock)) then
+			clockpulses                 <= clockpulses + 1 ;
+			if(clockpulses = 2200) then 
+				sample_clock            <= Not sample_clock;
+				clockpulses             <= 0;
 			end if;
+		end if;
 	end process;
 	
 	rd_control : process (but_reset, sys_clock, clockpulses)
@@ -92,12 +91,11 @@ begin
 				pin_rd <= '0';
 			elsif (clockpulses = 1750) then 
 				pin_rd <= '1';
-			if(pin_int = '0') then
-				sig_datain_r <= pin_datain;
-				sig_datain_l <= pin_datain_2;
+				if(pin_int = '0') then
+					sig_datain_r <= pin_datain;
+					sig_datain_l <= pin_datain_2;
+				end if;
 			end if;
-			end if;
-		
 		end if;
 	end process;	
 	
@@ -118,7 +116,7 @@ begin
 		i_clock             => sys_clock,
 		i_distance          => swt_distance,
 		i_reset             => but_reset,
-		i_sampleclock       => pin_sampleclock,
+		i_sampleclock       => sample_clock,
 
 		o_dataout           => pin_dataout,
 		o_channel           => pin_channel

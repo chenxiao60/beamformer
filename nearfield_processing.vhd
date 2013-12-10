@@ -1,6 +1,7 @@
 -----------------------------------------------------------------------------------
 -- Created by Sam Rohrer                                                        --
--- Beamforms in the nearfield based on a generic for distance                   -- 
+-- Beamforms in the nearfield based on a generic for distance                   --
+-- This is the actual processing that was written for the FPGA                  -- 
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
