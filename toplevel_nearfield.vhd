@@ -6,7 +6,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
-entity toplevel_nearfield5 is
+entity toplevel_nearfield is
 
 	port(
 	sys_clock           : in     std_logic; -- system clk signal
@@ -26,12 +26,12 @@ entity toplevel_nearfield5 is
 		
 	);
 	
-end toplevel_nearfield5;
+end toplevel_nearfield;
 
-architecture Behavioral of toplevel_nearfield5 is
+architecture Behavioral of toplevel_nearfield is
 	
 	--******************* Signal Processing ***************--
-	component nearfield2 is
+	component nearfield_processing is
 		
 		generic(
 		divisor           : integer := 50; -- difference between system clock 1 us 
@@ -105,7 +105,7 @@ begin
 	
 --**************** Signal Processing Port Map ***********--	
 	
-	fpga : nearfield2
+	fpga : nearfield_processing
 	generic map(
 		divisor             => 50,
 		speed_sound         => 13397,

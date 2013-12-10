@@ -10,7 +10,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 library UNISIM;
 use UNISIM.VComponents.all;
 
-entity nearfield1 is
+entity nearfield_processing is
 	generic(
 	divisor           : integer := 50; -- difference between system clock 1 us 
 	speed_sound       : integer := 13397; -- in inches/second
@@ -29,9 +29,9 @@ entity nearfield1 is
 	o_channel         :    out std_logic_vector (4 downto 0)  -- 5 bit to select which DAC to enable
 	);
 
-end nearfield1;
+end nearfield_processing;
 
-architecture Behavioral of nearfield1 is
+architecture Behavioral of nearfield_processing is
 
 	-- Holding Data
 	type   sr_array is array(natural range <>) of std_logic_vector(7 downto 0);

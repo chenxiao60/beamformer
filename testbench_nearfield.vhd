@@ -7,7 +7,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use IEEE.std_logic_unsigned.all;
 
-entity tb_nearfield1 is
+entity testbench_nearfield is
 	
 	port(
 	--sys_clock           : in     std_logic; -- system clk signal
@@ -23,12 +23,12 @@ entity tb_nearfield1 is
 	MemDB               : in     std_logic_vector (15 downto 0)	 -- memory address
 	
 	);
-end tb_nearfield1;
+end testbench_nearfield;
 
-architecture Behavioral of tb_nearfield1 is
+architecture Behavioral of testbench_nearfield is
 	
 	--******************* Signal Processing ***************--
-	component nearfield1 is
+	component nearfield_processing is
 		
 		generic(
 		divisor           : integer := 50; -- difference between system clock 1 us 
@@ -139,7 +139,7 @@ begin
 	
 --**************** Signal Processing Port Map ***********--	
 	
-	fpga : nearfield1
+	fpga : nearfield_processing
 	generic map(
 		divisor           	=> 50,
 		speed_sound         => 13397,
