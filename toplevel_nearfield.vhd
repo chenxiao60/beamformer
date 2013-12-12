@@ -20,9 +20,11 @@ entity toplevel_nearfield is
 	pin_datain          : in     std_logic_vector (7 downto 0); -- JC 0 to 7
 	pin_datain_2        : in     std_logic_vector (7 downto 0); -- JD 0 to 7
 	
-	pin_int             : in     std_logic;
+	pin_int             : in     std_logic; -- JB5
 	
-	pin_rd              :    out std_logic
+	pin_speaker_enable  :    out std_logic; --JB7
+	
+	pin_rd              :    out std_logic --JB6
 		
 	);
 	
@@ -47,6 +49,7 @@ architecture Behavioral of toplevel_nearfield is
 		i_reset           : in     std_logic ;                    -- To reset the entire system
 		i_sampleclock     : in     std_logic ;                    -- Rate at which the music is playing
 	
+		o_speaker_enable  :    out std_logic; --LDAC enable	
 		o_dataout         :    out std_logic_vector (7 downto 0); -- 8 bit to be multiplexed 
 		o_channel         :    out std_logic_vector (4 downto 0)  -- 5 bit to select which DAC to enable
 		);
@@ -118,6 +121,7 @@ begin
 		i_reset             => but_reset,
 		i_sampleclock       => sample_clock,
 
+		o_speaker_enable    => pin_speaker_enable,
 		o_dataout           => pin_dataout,
 		o_channel           => pin_channel
 		);

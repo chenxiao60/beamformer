@@ -25,6 +25,7 @@ entity nearfield_processing is
 	i_reset           : in     std_logic ;                    -- To reset the entire system
 	i_sampleclock     : in     std_logic ;                    -- Rate at which the music is playing
 	
+	o_speaker_enable  :    out std_logic; --LDAC enable
 	o_dataout         :    out std_logic_vector (7 downto 0); -- 8 bit to be multiplexed 
 	o_channel         :    out std_logic_vector (4 downto 0)  -- 5 bit to select which DAC to enable
 	);
@@ -70,7 +71,7 @@ architecture Behavioral of nearfield_processing is
 	signal output_counter_r_5 : integer range 0 to 127;
 
 	-- Counts through 5 different channels 
-	signal mux_counter       : integer range 0 to 4;
+	signal mux_counter       : integer range 0 to 5;
 	
 	--Delays & Calculation Signals 
 	signal sample_period     : integer range 0 to 25;
@@ -311,28 +312,39 @@ begin
 		  -- also selects the data to use on each output
 		if(mux_counter = 0) then
 			o_dataout <= data_r_0 + data_l_4;
-			mux_counter <= mux_counter + 1;		
+			mux_counter <= mux_counter + 1;	
+			o_speaker_enable <= '1';	
 			o_channel <= (0=>'0', OTHERS=>'1');
 
 		elsif (mux_counter = 1) then 
 			o_dataout <= data_r_1 + data_l_3;
 			mux_counter <= mux_counter + 1;
+			o_speaker_enable <= '1';
 			o_channel <= (1=>'0', OTHERS=>'1');
 
 		elsif (mux_counter = 2) then
 			o_dataout <= data_r_2 + data_l_2;		
 			mux_counter <= mux_counter + 1;
+			o_speaker_enable <= '1';
 			o_channel <= (2=>'0', OTHERS=>'1');
 		
 		elsif (mux_counter = 3) then
 			o_dataout <= data_r_3 + data_l_1;
 			mux_counter <= mux_counter + 1;
+			o_speaker_enable <= '1';
 			o_channel <= (3=>'0', OTHERS=>'1');
 		
 		elsif (mux_counter = 4) then
 			o_dataout <= data_r_4 + data_l_0;		
-			mux_counter <= 0;
+			mux_counter <= mux_counter + 1;
+			o_speaker_enable <= '1';
 			o_channel <= (4=>'0', OTHERS=>'1');
+			
+		elsif (mux_counter = 5) then
+			o_dataout <= X"00";		
+			mux_counter <= 0;
+			o_speaker_enable <= '0';
+			o_channel <= (OTHERS=>'1');
 
 		end if;
 		
