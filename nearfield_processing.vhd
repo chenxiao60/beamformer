@@ -166,7 +166,7 @@ begin
 		shift_register_l(2) <= shift_register_l(1);
 		shift_register_l(3) <= shift_register_l(2);
 		shift_register_l(4) <= shift_register_l(3);
-		shift_register_l(0) <= i_datain_r;
+		shift_register_l(0) <= i_datain_l;
 		end if;	
 
 end process;	
