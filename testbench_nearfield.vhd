@@ -81,13 +81,17 @@ begin
 	but_reset <= '0', '1' after 100 ns, '0' after 1000 ns;
 	pin_int   <= '0';
 	
+	
+	-- *************** Test Data Being Generated **********--
 	generate_data: process (sample_clock)
 	begin
 	if (rising_edge(sample_clock)) then
-		test_datain_r <= test_datain_r + X"1";
-		test_datain_l <= test_datain_l + X"1";
+		test_datain_r <= X"00";
+		test_datain_l <= X"00";
 	end if;
 	end process;
+	-- **************************************************** --
+
 
 	clock: process
 	begin
