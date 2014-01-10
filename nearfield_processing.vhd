@@ -305,7 +305,6 @@ begin
 	
 	elsif(clockpulses = 40) then
 			o_channel <= (OTHERS => '1');
-			o_speaker_enable <= '1';
 	
 	elsif (rising_edge (us_clock)) then
 		
