@@ -73,6 +73,10 @@ architecture Behavioral of nearfield_processing is
 	-- Counts through 5 different channels 
 	signal mux_counter       : integer range 0 to 5;
 	
+	signal temp_extended     : std_logic_vector (8 downto 0);
+	signal temp_extended_2   : std_logic_vector (8 downto 0);
+	signal result            : std_logic_vector (8 downto 0);
+	
 	--Delays & Calculation Signals 
 	signal sample_period     : integer range 0 to 25;
 	signal delay_1           : integer range 0 to 127;
@@ -305,37 +309,53 @@ begin
 	
 	elsif(clockpulses = 40) then
 			o_channel <= (OTHERS => '1');
+			o_speaker_enable <= '1';
 	
 	elsif (rising_edge (us_clock)) then
 		
 		--Selects which DAC to output to (cycles every 5 us)
 		  -- also selects the data to use on each output
 		if(mux_counter = 0) then
-			o_dataout <= data_r_0 + data_l_4;
+			temp_extended <= '0' & data_r_0;
+			temp_extended_2 <= '0' & data_l_4;
+			result <= temp_extended + temp_extended_2;
+			o_dataout <= result (8 downto 1);
 			mux_counter <= mux_counter + 1;	
 			o_speaker_enable <= '1';	
 			o_channel <= (0=>'0', OTHERS=>'1');
 
 		elsif (mux_counter = 1) then 
-			o_dataout <= data_r_1 + data_l_3;
+			temp_extended <= '0' & data_r_1;
+			temp_extended_2 <= '0' & data_l_3;
+			result <= temp_extended + temp_extended_2;
+			o_dataout <= result (8 downto 1);
 			mux_counter <= mux_counter + 1;
 			o_speaker_enable <= '1';
 			o_channel <= (1=>'0', OTHERS=>'1');
 
 		elsif (mux_counter = 2) then
-			o_dataout <= data_r_2 + data_l_2;		
+			temp_extended <= '0' & data_r_2;
+			temp_extended_2 <= '0' & data_l_2;
+			result <= temp_extended + temp_extended_2;
+			o_dataout <= result (8 downto 1);		
 			mux_counter <= mux_counter + 1;
 			o_speaker_enable <= '1';
 			o_channel <= (2=>'0', OTHERS=>'1');
 		
 		elsif (mux_counter = 3) then
-			o_dataout <= data_r_3 + data_l_1;
+			temp_extended <= '0' & data_r_3;
+			temp_extended_2 <= '0' & data_l_1;
+			result <= temp_extended + temp_extended_2;
+			o_dataout <= result (8 downto 1);
 			mux_counter <= mux_counter + 1;
 			o_speaker_enable <= '1';
 			o_channel <= (3=>'0', OTHERS=>'1');
 		
 		elsif (mux_counter = 4) then
-			o_dataout <= data_r_4 + data_l_0;		
+			temp_extended <= '0' & data_r_4;
+			temp_extended_2 <= '0' & data_l_0;
+			result <= temp_extended + temp_extended_2;
+			o_dataout <= result (8 downto 1);		
 			mux_counter <= mux_counter + 1;
 			o_speaker_enable <= '1';
 			o_channel <= (4=>'0', OTHERS=>'1');
