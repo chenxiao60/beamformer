@@ -72,10 +72,24 @@ architecture Behavioral of nearfield_processing is
 
 	-- Counts through 5 different channels 
 	signal mux_counter       : integer range 0 to 5;
-	
-	signal temp_extended     : std_logic_vector (8 downto 0);
+		
+	signal temp_extended_0   : std_logic_vector (8 downto 0);
+	signal temp_extended_2_0 : std_logic_vector (8 downto 0);
+	signal temp_extended_1   : std_logic_vector (8 downto 0);
+	signal temp_extended_2_1 : std_logic_vector (8 downto 0);
 	signal temp_extended_2   : std_logic_vector (8 downto 0);
-	signal result            : std_logic_vector (8 downto 0);
+	signal temp_extended_2_2 : std_logic_vector (8 downto 0);
+	signal temp_extended_3   : std_logic_vector (8 downto 0);
+	signal temp_extended_2_3 : std_logic_vector (8 downto 0);
+	signal temp_extended_4   : std_logic_vector (8 downto 0);
+	signal temp_extended_2_4 : std_logic_vector (8 downto 0);
+	
+	signal result_0          : std_logic_vector (8 downto 0);
+	signal result_1          : std_logic_vector (8 downto 0);
+	signal result_2          : std_logic_vector (8 downto 0);
+	signal result_3          : std_logic_vector (8 downto 0);
+	signal result_4          : std_logic_vector (8 downto 0);
+					
 	
 	--Delays & Calculation Signals 
 	signal sample_period     : integer range 0 to 25;
@@ -316,46 +330,31 @@ begin
 		--Selects which DAC to output to (cycles every 5 us)
 		  -- also selects the data to use on each output
 		if(mux_counter = 0) then
-			temp_extended <= '0' & data_r_0;
-			temp_extended_2 <= '0' & data_l_4;
-			result <= temp_extended + temp_extended_2;
-			o_dataout <= result (8 downto 1);
+			o_dataout <= result_0 (8 downto 1);
 			mux_counter <= mux_counter + 1;	
 			o_speaker_enable <= '1';	
 			o_channel <= (0=>'0', OTHERS=>'1');
 
 		elsif (mux_counter = 1) then 
-			temp_extended <= '0' & data_r_1;
-			temp_extended_2 <= '0' & data_l_3;
-			result <= temp_extended + temp_extended_2;
-			o_dataout <= result (8 downto 1);
+			o_dataout <= result_1 (8 downto 1);
 			mux_counter <= mux_counter + 1;
 			o_speaker_enable <= '1';
 			o_channel <= (1=>'0', OTHERS=>'1');
 
 		elsif (mux_counter = 2) then
-			temp_extended <= '0' & data_r_2;
-			temp_extended_2 <= '0' & data_l_2;
-			result <= temp_extended + temp_extended_2;
-			o_dataout <= result (8 downto 1);		
+			o_dataout <= result_2 (8 downto 1);		
 			mux_counter <= mux_counter + 1;
 			o_speaker_enable <= '1';
 			o_channel <= (2=>'0', OTHERS=>'1');
 		
 		elsif (mux_counter = 3) then
-			temp_extended <= '0' & data_r_3;
-			temp_extended_2 <= '0' & data_l_1;
-			result <= temp_extended + temp_extended_2;
-			o_dataout <= result (8 downto 1);
+			o_dataout <= result_3 (8 downto 1);
 			mux_counter <= mux_counter + 1;
 			o_speaker_enable <= '1';
 			o_channel <= (3=>'0', OTHERS=>'1');
 		
 		elsif (mux_counter = 4) then
-			temp_extended <= '0' & data_r_4;
-			temp_extended_2 <= '0' & data_l_0;
-			result <= temp_extended + temp_extended_2;
-			o_dataout <= result (8 downto 1);		
+			o_dataout <= result_4 (8 downto 1);		
 			mux_counter <= mux_counter + 1;
 			o_speaker_enable <= '1';
 			o_channel <= (4=>'0', OTHERS=>'1');
@@ -367,10 +366,31 @@ begin
 			o_channel <= (OTHERS=>'1');
 
 		end if;
-		
 	end if;
+	
+	--Combinatorial Logic to fill the result registers
+	temp_extended_0   <= '0' & data_r_0;
+	temp_extended_2_0 <= '0' & data_l_4;
+	result_0 <= temp_extended_0 + temp_extended_2_0;
+	
+	temp_extended_1   <= '0' & data_r_1;
+	temp_extended_2_1 <= '0' & data_l_3;
+	result_1 <= temp_extended_1 + temp_extended_2_1;
+	
+	temp_extended_2 <= '0' & data_r_2;
+	temp_extended_2_2 <= '0' & data_l_2;
+	result_2 <= temp_extended_2 + temp_extended_2_2;
+	
+	temp_extended_3 <= '0' & data_r_3;
+	temp_extended_2_3 <= '0' & data_l_1;
+	result_3 <= temp_extended_3 + temp_extended_2_3;
+	
+	temp_extended_4 <= '0' & data_r_4;
+	temp_extended_2_4 <= '0' & data_l_0;
+	result_4 <= temp_extended_4 + temp_extended_2_4;
+	
 end process;
 
---*******************************************************--
+--***************************************************--
 	
 end Behavioral;
