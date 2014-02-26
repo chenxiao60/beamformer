@@ -156,10 +156,10 @@ begin
 
 		--********** Manually Set Delays ****************--
 		
-		delay_1 <= 13;
-		delay_2 <= 55;
-		delay_3 <= 85;
-		delay_4 <= 104;
+		delay_1 <= 42;
+		delay_2 <= 72;
+		delay_3 <= 91;
+		delay_4 <= 97;
 		sample_period <= 22;
 		
 		--********** End Manually Set Delays ************--
@@ -218,19 +218,19 @@ begin
 		elsif (rising_edge(us_clock)) then	
 			
 			--Output Conditions based on delays calculated or inserted
-			if ( output_counter_l_1 = delay_1 or output_counter_l_2 = delay_1 or output_counter_l_3 = delay_1 or output_counter_l_4 = delay_1 or output_counter_l_5 = delay_1) then
+			if ( output_counter_l_1 = 0 or output_counter_l_2 = 0 or output_counter_l_3 = 0 or output_counter_l_4 = 0 or output_counter_l_5 = 0) then
 				data_l_0 <= shift_register_l(0);
 			end if;
-			if (output_counter_l_1 = delay_2 or output_counter_l_2 = delay_2 or output_counter_l_3 = delay_2 or output_counter_l_4 = delay_2 or output_counter_l_5 = delay_2) then
+			if (output_counter_l_1 = delay_1 or output_counter_l_2 = delay_1 or output_counter_l_3 = delay_1 or output_counter_l_4 = delay_1 or output_counter_l_5 = delay_1) then
 				data_l_1 <= shift_register_l(1);
 			end if;
-			if ( output_counter_l_1 = delay_3 or output_counter_l_2 = delay_3 or output_counter_l_3 = delay_3 or output_counter_l_4 = delay_3 or output_counter_l_5 = delay_3) then
+			if ( output_counter_l_1 = delay_2 or output_counter_l_2 = delay_2 or output_counter_l_3 = delay_2 or output_counter_l_4 = delay_2 or output_counter_l_5 = delay_2) then
 				data_l_2 <= shift_register_l(2);
 			end if;
-			if ( output_counter_l_1 = delay_4 or output_counter_l_2 = delay_4 or output_counter_l_3 = delay_4 or output_counter_l_4 = delay_4 or output_counter_l_5 = delay_4) then
+			if ( output_counter_l_1 = delay_3 or output_counter_l_2 = delay_3 or output_counter_l_3 = delay_3 or output_counter_l_4 = delay_3 or output_counter_l_5 = delay_3) then
 				data_l_3 <= shift_register_l(3);
 			end if;
-			if (output_counter_l_1 = (sample_period * 5) or output_counter_l_2 = (sample_period * 5) or output_counter_l_3 = (sample_period * 5) or output_counter_l_4 = (sample_period * 5) or output_counter_l_5 = (sample_period * 5)) then
+			if (output_counter_l_1 = delay_4 or output_counter_l_2 = delay_4 or output_counter_l_3 = delay_4 or output_counter_l_4 = delay_4 or output_counter_l_5 = delay_4) then
 				data_l_4 <= shift_register_l(4);
 			end if;
 			
