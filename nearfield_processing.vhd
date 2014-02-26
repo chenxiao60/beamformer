@@ -210,10 +210,10 @@ begin
 		
 		if(i_reset = '1') then
 			output_counter_l_1 <= 0;
-			output_counter_l_2 <= 0;
-			output_counter_l_3 <= 0;
-			output_counter_l_4 <= 0;
-			output_counter_l_5 <= 0;												
+			output_counter_l_2 <= sample_period;
+			output_counter_l_3 <= (sample_period*2);
+			output_counter_l_4 <= (sample_period*3);
+			output_counter_l_5 <= (sample_period*4);												
 
 		elsif (rising_edge(us_clock)) then	
 			
@@ -265,10 +265,10 @@ begin
 		
 	if(i_reset = '1') then
 		output_counter_r_1 <= 0;
-		output_counter_r_2 <= 0;
-		output_counter_r_3 <= 0;
-		output_counter_r_4 <= 0;
-		output_counter_r_5 <= 0;												
+		output_counter_r_2 <= sample_period;
+		output_counter_r_3 <= (sample_period*2);
+		output_counter_r_4 <= (sample_period*3);
+		output_counter_r_5 <= (sample_period*4);												
 
 	elsif (rising_edge(us_clock)) then	
 		
