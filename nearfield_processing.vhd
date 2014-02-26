@@ -327,7 +327,7 @@ begin
 	
 	elsif (rising_edge (us_clock)) then
 		
-		--Selects which DAC to output to (cycles every 5 us)
+		--Selects which DAC to output to (cycles every 6 us)
 		  -- also selects the data to use on each output
 		if(mux_counter = 0) then
 			o_dataout <= result_0 (8 downto 1);
