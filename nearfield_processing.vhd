@@ -227,11 +227,13 @@ begin
 
 		elsif (rising_edge(us_clock)) then	
 			
-			data_l_0 <= X"00";
-			data_l_1 <= X"00";
-			data_l_2 <= X"00";
-			data_l_3 <= X"00";
-			data_l_4 <= X"00";
+			if(mux_counter = 5) then
+				data_l_0 <= X"00";
+				data_l_1 <= X"00";
+				data_l_2 <= X"00";
+				data_l_3 <= X"00";
+				data_l_4 <= X"00";
+			end if;
 			
 			--Output Conditions based on delays calculated or inserted
 			if(output_counter_l_0 = 0) then
@@ -332,11 +334,13 @@ begin
 
 		elsif (rising_edge(us_clock)) then	
 			
-			data_r_0 <= X"00";
-			data_r_1 <= X"00";
-			data_r_2 <= X"00";
-			data_r_3 <= X"00";
-			data_r_4 <= X"00";
+			if(mux_counter = 5) then
+				data_r_0 <= X"00";
+				data_r_1 <= X"00";
+				data_r_2 <= X"00";
+				data_r_3 <= X"00";
+				data_r_4 <= X"00";
+			end if;
 			
 			--Output Conditions based on delays calculated or inserted
 			if(output_counter_r_0 = 0) then
@@ -478,6 +482,12 @@ begin
 		end if;
 	end if;
 	
+end process;
+
+--********************* Combinatorial to add data together **************************--
+generating_result: process (i_clock)
+begin
+	
 	--Combinatorial Logic to fill the result registers
 	temp_extended_0   <= '0' & data_r_0;
 	temp_extended_2_0 <= '0' & data_l_4;
@@ -500,7 +510,6 @@ begin
 	result_4 <= temp_extended_4 + temp_extended_2_4;
 	
 end process;
-
---***************************************************--
+--**************************************************************--
 	
 end Behavioral;
