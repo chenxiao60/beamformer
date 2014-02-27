@@ -86,8 +86,8 @@ begin
 	generate_data: process (sample_clock)
 	begin
 	if (rising_edge(sample_clock)) then
-		test_datain_r <= "11110000";
-		test_datain_l <= "00001111";
+		test_datain_r <= test_datain_r + X"11";
+		test_datain_l <= test_datain_l + X"11";
 	end if;
 	end process;
 	-- **************************************************** --
