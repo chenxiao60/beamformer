@@ -227,13 +227,14 @@ begin
 
 		elsif (rising_edge(us_clock)) then	
 			
-			if(mux_counter = 5) then
-				data_l_0 <= "10000000";
-				data_l_1 <= "10000000";
-				data_l_2 <= "10000000";
-				data_l_3 <= "10000000";
-				data_l_4 <= "10000000";
-			end if;
+		-- change this based on if its working... should cause samples to be 20 us long vs 6 us long
+			--if(mux_counter = 5) then
+			--	data_l_0 <= "10000000";
+			--	data_l_1 <= "10000000";
+			--	data_l_2 <= "10000000";
+			--	data_l_3 <= "10000000";
+			--	data_l_4 <= "10000000";
+			--end if;
 			
 			--Output Conditions based on delays calculated or inserted
 			if(output_counter_l_0 = 0) then
@@ -333,14 +334,15 @@ begin
 			output_counter_r_4 <= (sample_period*4);												
 
 		elsif (rising_edge(us_clock)) then	
-			
-			if(mux_counter = 5) then
-				data_r_0 <= "10000000";
-				data_r_1 <= "10000000";
-				data_r_2 <= "10000000";
-				data_r_3 <= "10000000";
-				data_r_4 <= "10000000";
-			end if;
+		
+		-- change this based on if its working... should cause samples to be 20 us long vs 6 us long	
+			--if(mux_counter = 5) then
+			--	data_r_0 <= "10000000";
+			--	data_r_1 <= "10000000";
+			--	data_r_2 <= "10000000";
+			--	data_r_3 <= "10000000";
+			--	data_r_4 <= "10000000";
+			--end if;
 			
 			--Output Conditions based on delays calculated or inserted
 			if(output_counter_r_0 = 0) then
