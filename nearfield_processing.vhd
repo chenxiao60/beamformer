@@ -228,11 +228,11 @@ begin
 		elsif (rising_edge(us_clock)) then	
 			
 			if(mux_counter = 5) then
-				data_l_0 <= X"00";
-				data_l_1 <= X"00";
-				data_l_2 <= X"00";
-				data_l_3 <= X"00";
-				data_l_4 <= X"00";
+				data_l_0 <= "10000000";
+				data_l_1 <= "10000000";
+				data_l_2 <= "10000000";
+				data_l_3 <= "10000000";
+				data_l_4 <= "10000000";
 			end if;
 			
 			--Output Conditions based on delays calculated or inserted
@@ -335,11 +335,11 @@ begin
 		elsif (rising_edge(us_clock)) then	
 			
 			if(mux_counter = 5) then
-				data_r_0 <= X"00";
-				data_r_1 <= X"00";
-				data_r_2 <= X"00";
-				data_r_3 <= X"00";
-				data_r_4 <= X"00";
+				data_r_0 <= "10000000";
+				data_r_1 <= "10000000";
+				data_r_2 <= "10000000";
+				data_r_3 <= "10000000";
+				data_r_4 <= "10000000";
 			end if;
 			
 			--Output Conditions based on delays calculated or inserted
