@@ -227,6 +227,12 @@ begin
 
 		elsif (rising_edge(us_clock)) then	
 			
+			data_l_0 <= X"00";
+			data_l_1 <= X"00";
+			data_l_2 <= X"00";
+			data_l_3 <= X"00";
+			data_l_4 <= X"00";
+			
 			--Output Conditions based on delays calculated or inserted
 			if(output_counter_l_0 = 0) then
 				data_l_0 <= shift_register_l(0);
@@ -325,6 +331,12 @@ begin
 			output_counter_r_4 <= (sample_period*4);												
 
 		elsif (rising_edge(us_clock)) then	
+			
+			data_r_0 <= X"00";
+			data_r_1 <= X"00";
+			data_r_2 <= X"00";
+			data_r_3 <= X"00";
+			data_r_4 <= X"00";
 			
 			--Output Conditions based on delays calculated or inserted
 			if(output_counter_r_0 = 0) then
