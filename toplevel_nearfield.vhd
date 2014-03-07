@@ -90,9 +90,9 @@ begin
 		if (but_reset = '1' ) then 
 			pin_rd <= '1';
 		elsif (rising_edge(sys_clock)) then
-			if (clockpulses = 400) then
+			if (clockpulses = 400 and sample_clock = '1') then
 				pin_rd <= '0';
-			elsif (clockpulses = 650) then 
+			elsif (clockpulses = 650 and sample_clock = '1') then 
 				pin_rd <= '1';
 				if(pin_int = '0') then
 					sig_datain_r <= pin_datain;
