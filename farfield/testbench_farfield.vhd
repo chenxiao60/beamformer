@@ -8,7 +8,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
-entity testbench_nearfield is
+entity testbench_farfield is
 	
 	port(
 	--sys_clock           : in     std_logic; -- system clk signal
@@ -28,12 +28,12 @@ entity testbench_nearfield is
 	pin_rd              :    out std_logic  --JB6
 	
 	);
-end testbench_nearfield;
+end testbench_farfield;
 
-architecture Behavioral of testbench_nearfield is
+architecture Behavioral of testbench_farfield is
 	
 	--******************* Signal Processing ***************--
-	component nearfield_processing is
+	component farfield_processing is
 		
 		generic(
 		divisor           : integer := 50; -- difference between system clock 1 us 
@@ -136,7 +136,7 @@ begin
 	
 --**************** Signal Processing Port Map ***********--	
 	
-	fpga : nearfield_processing
+	fpga : farfield_processing
 	generic map(
 		divisor           	=> 50,
 		speed_sound         => 13397,

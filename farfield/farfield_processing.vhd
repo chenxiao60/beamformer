@@ -10,7 +10,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 library UNISIM;
 use UNISIM.VComponents.all;
 
-entity nearfield_processing is
+entity farfield_processing is
 	generic(
 	divisor           : integer := 50; -- difference between system clock 1 us 
 	speed_sound       : integer := 13397; -- in inches/second
@@ -30,9 +30,9 @@ entity nearfield_processing is
 	o_channel         :    out std_logic_vector (4 downto 0)  -- 5 bit to select which DAC to enable
 	);
 
-end nearfield_processing;
+end farfield_processing;
 
-architecture Behavioral of nearfield_processing is
+architecture Behavioral of farfield_processing is
 
 	-- Holding Data
 	type   sr_array is array(natural range <>) of std_logic_vector(7 downto 0);
@@ -156,10 +156,10 @@ begin
 
 		--********** Manually Set Delays ****************--
 		
-		delay_1 <= 42;
-		delay_2 <= 72;
-		delay_3 <= 91;
-		delay_4 <= 97;
+		delay_1 <= 22;
+		delay_2 <= 44;
+		delay_3 <= 66;
+		delay_4 <= 88;
 		sample_period <= 22;
 		
 		--********** End Manually Set Delays ************--
