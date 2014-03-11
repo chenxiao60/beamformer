@@ -115,7 +115,7 @@ begin
 
 			elsif(rising_edge(i_clock)) then
 				clockpulses                 <= clockpulses + 1 ;
-				if(clockpulses = divisor) then 
+				if(clockpulses = (divisor-1)) then 
 					us_clock                 <= Not us_clock;
 					clockpulses              <= 0;
 				end if;
@@ -306,7 +306,7 @@ begin
 			
 		end if; 	
 		
-		if(rising_edge(us_clock)) then
+		if(rising_edge(i_sampleclock)) then
 			if(sample_edges = 0) then 
 				output_counter_l_0 <= 0;
 			elsif(sample_edges = 1) then
@@ -319,7 +319,7 @@ begin
 				output_counter_l_4 <= 0;						
 			end if;
 		end if;
-		
+		 
 	end process;
 
 --************* Processes data by inserting delays **************-- 
@@ -414,7 +414,7 @@ begin
 			
 		end if; 	
 		
-		if(rising_edge(us_clock)) then
+		if(rising_edge(i_sampleclock)) then
 			if(sample_edges = 0) then 
 				output_counter_r_0 <= 0;
 			elsif(sample_edges = 1) then
