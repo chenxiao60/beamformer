@@ -78,7 +78,7 @@ begin
 
 		elsif(rising_edge(sys_clock)) then
 			clockpulses                 <= clockpulses + 1 ;
-			if(clockpulses = 1100) then 
+			if(clockpulses = (1100-1)) then 
 				sample_clock            <= Not sample_clock;
 				clockpulses             <= 0;
 			end if;

@@ -9,6 +9,9 @@ use IEEE.NUMERIC_STD.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity testbench_nearfield is
+	generic(
+	sample_divisor     : integer := 11
+	);
 	
 	port(
 	--sys_clock           : in     std_logic; -- system clk signal
@@ -51,7 +54,8 @@ architecture Behavioral of testbench_nearfield is
 	
 		o_speaker_enable  :    out std_logic; --LDAC enable	
 		o_dataout         :    out std_logic_vector (7 downto 0); -- 8 bit to be multiplexed 
-		o_channel         :    out std_logic_vector (4 downto 0)  -- 5 bit to select which DAC to enable
+		o_channel         :    out std_logic_vector (4 downto 0);  -- 5 bit to select which DAC to enable
+		o_us_clock        :    out std_logic
 		);
 		
 	end component;
@@ -67,8 +71,11 @@ architecture Behavioral of testbench_nearfield is
 
 	-- Normal signals needed
 	signal clockpulses     : integer range 0 to 2200;
+	signal us_clockpulses  : integer range 0 to 12;
 	
 	signal sample_clock    : std_logic;
+	
+	signal us_clock        : std_logic;
 	
 	signal sig_datain_r    : std_logic_vector (7 downto 0);
 	signal sig_datain_l    : std_logic_vector (7 downto 0);
@@ -101,34 +108,40 @@ begin
 		wait for 5 ns;
 	end process; 
 
-	sampleclock_division : process(but_reset, sys_clock)
+	sampleclock_division : process(but_reset, us_clock)
 	begin
 		if (but_reset = '1') then
-			clockpulses                 <= 0;
+			us_clockpulses           <= 0;
 			sample_clock             <= '0';
-		elsif(rising_edge(sys_clock)) then
-			clockpulses                 <= clockpulses + 1 ;
-			if(clockpulses = 1100) then 
-				sample_clock            <= Not sample_clock;
-				clockpulses             <= 0;
+		elsif(rising_edge(us_clock)) then
+			us_clockpulses           <= us_clockpulses + 1 ;
+			if(us_clockpulses = (sample_divisor-1)) then 
+				sample_clock         <= Not sample_clock;
+				us_clockpulses       <= 0;
 			end if;		
 		end if;
 	end process;
 	
-	rd_control : process (but_reset, sys_clock, clockpulses)
+	rd_control : process (but_reset, sys_clock, clockpulses, sample_clock)
 	begin
 		if (but_reset = '1' ) then 
-			pin_rd <= '1';
+			pin_rd               <= '1';
+			clockpulses          <= 0;
+		
 		elsif (rising_edge(sys_clock)) then
+			clockpulses          <= clockpulses + 1;
 			if (clockpulses = 400) then
-				pin_rd <= '0';
+				pin_rd           <= '0';
 			elsif (clockpulses = 650) then 
-				pin_rd <= '1';
+				pin_rd           <= '1';
 				if(pin_int = '0') then
 					sig_datain_r <= test_datain_r;
 					sig_datain_l <= test_datain_l;
 				end if;
 			end if;
+				
+		elsif (rising_edge(sample_clock)) then 
+				clockpulses      <= 0; 
 		end if;
 	end process;
  
@@ -153,7 +166,8 @@ begin
 
 		o_speaker_enable    => pin_speaker_enable,
 		o_dataout           => pin_dataout,
-		o_channel           => pin_channel
+		o_channel           => pin_channel,
+		o_us_clock          => us_clock
 		);	
 	
 end Behavioral;

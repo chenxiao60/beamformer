@@ -27,7 +27,8 @@ entity nearfield_processing is
 	
 	o_speaker_enable  :    out std_logic; --LDAC enable
 	o_dataout         :    out std_logic_vector (7 downto 0); -- 8 bit to be multiplexed 
-	o_channel         :    out std_logic_vector (4 downto 0)  -- 5 bit to select which DAC to enable
+	o_channel         :    out std_logic_vector (4 downto 0);  -- 5 bit to select which DAC to enable
+	o_us_clock        :    out std_logic
 	);
 
 end nearfield_processing;
@@ -105,23 +106,23 @@ architecture Behavioral of nearfield_processing is
 	signal clockpulses       : integer range 0 to 127;
 	
 begin
-	
---************** From system clock to 1 us *************--
-	clock_division : process(i_reset, i_clock)
-	begin
-			if (i_reset = '1') then
-				clockpulses                 <= 0;
-				us_clock                    <= '0';
+	--tying output signals
+	o_us_clock                       <= us_clock;
 
-			elsif(rising_edge(i_clock)) then
-				clockpulses                 <= clockpulses + 1 ;
-				if(clockpulses = divisor) then 
-					us_clock                 <= Not us_clock;
-					clockpulses              <= 0;
-				end if;
-			
-			end if;
-	end process;
+--************** From system clock to 1 us *************--
+clock_division : process(i_reset, i_clock)
+begin	
+	if (i_reset = '1') then
+		clockpulses                 <= 0;
+		us_clock                    <= '0';
+	elsif(rising_edge(i_clock)) then
+		clockpulses                 <= clockpulses + 1 ;
+		if(clockpulses = (divisor-1)) then 
+			us_clock                 <= Not us_clock;
+			clockpulses              <= 0;
+		end if;
+	end if;
+end process;
 
 --*************** Distance to delay converter*******--
 distance_to_delay : process (i_clock)
@@ -156,10 +157,10 @@ begin
 
 		--********** Manually Set Delays ****************--
 		
-		delay_1 <= 42;
-		delay_2 <= 72;
-		delay_3 <= 91;
-		delay_4 <= 97;
+		delay_1 <= 22; --42
+		delay_2 <= 44; --72
+		delay_3 <= 66; --91
+		delay_4 <= 88; --97
 		sample_period <= 22;
 		
 		--********** End Manually Set Delays ************--
@@ -226,15 +227,6 @@ begin
 			output_counter_l_4 <= (sample_period*4);												
 
 		elsif (rising_edge(us_clock)) then	
-			
-		-- change this based on if its working... should cause samples to be 20 us long vs 6 us long
-			--if(mux_counter = 5) then
-			--	data_l_0 <= "10000000";
-			--	data_l_1 <= "10000000";
-			--	data_l_2 <= "10000000";
-			--	data_l_3 <= "10000000";
-			--	data_l_4 <= "10000000";
-			--end if;
 			
 			--Output Conditions based on delays calculated or inserted
 			if(output_counter_l_0 = 0) then
@@ -334,15 +326,6 @@ begin
 			output_counter_r_4 <= (sample_period*4);												
 
 		elsif (rising_edge(us_clock)) then	
-		
-		-- change this based on if its working... should cause samples to be 20 us long vs 6 us long	
-			--if(mux_counter = 5) then
-			--	data_r_0 <= "10000000";
-			--	data_r_1 <= "10000000";
-			--	data_r_2 <= "10000000";
-			--	data_r_3 <= "10000000";
-			--	data_r_4 <= "10000000";
-			--end if;
 			
 			--Output Conditions based on delays calculated or inserted
 			if(output_counter_r_0 = 0) then
