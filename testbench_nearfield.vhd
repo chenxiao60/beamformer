@@ -15,7 +15,7 @@ entity testbench_nearfield is
 	
 	port(
 	--sys_clock           : in     std_logic; -- system clk signal
-	swt_distance        : in     std_logic_vector (4 downto 0); -- switch 0 to 4
+	--swt_distance        : in     std_logic_vector (4 downto 0); -- switch 0 to 4
 	--but_reset           : in     std_logic ; --Button D
 	
 	pin_dataout         :    out std_logic_vector (7 downto 0); -- JA 0 to 7 
@@ -68,6 +68,7 @@ architecture Behavioral of testbench_nearfield is
 	signal sys_clock       : std_logic;
 	signal but_reset       : std_logic;
 	signal pin_int         : std_logic;
+	signal swt_distance    : std_logic_vector (4 downto 0) :="00000";
 
 	-- Normal signals needed
 	signal clockpulses     : integer range 0 to 2200;
@@ -87,6 +88,7 @@ begin
 	--*************** User Processes **************--
 	but_reset <= '0', '1' after 100 ns, '0' after 1000 ns;
 	pin_int   <= '0';
+	
 	
 	
 	-- *************** Test Data Being Generated **********--
