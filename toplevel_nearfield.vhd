@@ -104,8 +104,8 @@ begin
 			elsif (clockpulses = 650) then 
 				pin_rd           <= '1';
 				if(pin_int = '0') then
-					sig_datain_r <= test_datain_r;
-					sig_datain_l <= test_datain_l;
+					sig_datain_r <= pin_datain;
+					sig_datain_l <= pin_datain_2;
 				end if;
 			end if;
 				

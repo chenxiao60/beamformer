@@ -216,7 +216,7 @@ begin
 end process; 
 	
 --************* Processes data by inserting delays **************-- 
-speaker_processing_l : process(i_reset, us_clock, i_sampleclock)
+speaker_processing_l : process(i_reset, us_clock, i_sampleclock, sample_period)
 begin
 		
 		if(i_reset = '1') then
@@ -315,7 +315,7 @@ begin
 	end process;
 
 --************* Processes data by inserting delays **************-- 
-speaker_processing_r : process(i_reset, us_clock, i_sampleclock)
+speaker_processing_r : process(i_reset, us_clock, i_sampleclock, sample_period)
 begin
 		
 		if(i_reset = '1') then
@@ -414,7 +414,7 @@ begin
 end process;
 
 ----************* Output Selector (through MUX) *************--
-output_selector : process (i_reset, us_clock, i_clock)
+output_selector : process (i_reset, us_clock, i_clock, clockpulses)
 begin
 	
 	if (i_reset = '1') then
@@ -470,8 +470,6 @@ begin
 end process;
 
 --********************* Combinatorial to add data together **************************--
-generating_result: process (i_clock)
-begin
 	
 	--Combinatorial Logic to fill the result registers
 	temp_extended_0   <= '0' & data_r_0;
@@ -494,7 +492,6 @@ begin
 	temp_extended_2_4 <= '0' & data_l_0;
 	result_4 <= temp_extended_4 + temp_extended_2_4;
 	
-end process;
 --**************************************************************--
 	
 end Behavioral;
