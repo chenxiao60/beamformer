@@ -192,7 +192,7 @@ begin
 	
 		elsif(sample_edges = 4) then
 			shift_register_r(4) <= i_datain_r;
-			shift_register_l(3) <= i_datain_l;
+			shift_register_l(4) <= i_datain_l;
 		
 		end if;
 	end if;	
