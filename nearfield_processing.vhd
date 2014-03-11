@@ -207,7 +207,7 @@ begin
 		sample_edges <= 0;
 	elsif (rising_edge(i_sampleclock)) then
 		sample_edges <= sample_edges +1;
-		if (sample_edges = 5) then
+		if (sample_edges = 4) then
 			sample_edges <= 0;
 		end if;
 	end if;
