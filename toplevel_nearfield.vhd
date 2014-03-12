@@ -126,8 +126,8 @@ begin
 		)
 
 	port map(
-		i_datain_r          => sig_datain_l,
-		i_datain_l          => sig_datain_r,
+		i_datain_r          => sig_datain_r,
+		i_datain_l          => sig_datain_l,
 		i_clock             => sys_clock,
 		i_distance          => swt_distance,
 		i_reset             => but_reset,

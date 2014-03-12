@@ -157,10 +157,10 @@ begin
 
 		--********** Manually Set Delays ****************--
 		
-		delay_1 <= 22; --42
-		delay_2 <= 44; --72
-		delay_3 <= 66; --91
-		delay_4 <= 88; --97
+		delay_1 <= (22+2); --42
+		delay_2 <= (44+2); --72
+		delay_3 <= (66+2); --91
+		delay_4 <= (88+2); --97
 		sample_period <= 22;
 		
 		--********** End Manually Set Delays ************--
@@ -229,7 +229,7 @@ begin
 		elsif (rising_edge(us_clock)) then	
 			
 			--Output Conditions based on delays calculated or inserted
-			if(output_counter_l_0 = 0) then
+			if(output_counter_l_0 = 2) then
 				data_l_0 <= shift_register_l(0);
 			elsif(output_counter_l_0 = delay_1) then
 				data_l_1 <= shift_register_l(0);
@@ -241,7 +241,7 @@ begin
 				data_l_4 <= shift_register_l(0);
 			end if;
 			
-			if(output_counter_l_1 = 0) then
+			if(output_counter_l_1 = 2) then
 				data_l_0 <= shift_register_l(1);
 			elsif(output_counter_l_1 = delay_1) then
 				data_l_1 <= shift_register_l(1);
@@ -253,7 +253,7 @@ begin
 				data_l_4 <= shift_register_l(1);
 			end if;
 			
-			if(output_counter_l_2 = 0) then
+			if(output_counter_l_2 = 2) then
 				data_l_0 <= shift_register_l(2);
 			elsif(output_counter_l_2 = delay_1) then
 				data_l_1 <= shift_register_l(2);
@@ -265,7 +265,7 @@ begin
 				data_l_4 <= shift_register_l(2);
 			end if;
 			
-			if(output_counter_l_3 = 0) then
+			if(output_counter_l_3 = 2) then
 				data_l_0 <= shift_register_l(3);
 			elsif(output_counter_l_3 = delay_1) then
 				data_l_1 <= shift_register_l(3);
@@ -277,7 +277,7 @@ begin
 				data_l_4 <= shift_register_l(3);
 			end if;
 			
-			if(output_counter_l_4 = 0) then
+			if(output_counter_l_4 = 2) then
 				data_l_0 <= shift_register_l(4);
 			elsif(output_counter_l_4 = delay_1) then
 				data_l_1 <= shift_register_l(4);
@@ -289,14 +289,16 @@ begin
 				data_l_4 <= shift_register_l(4);
 			end if;
 			
+		end if; 	
+		
+		if(rising_edge(us_clock)) then
 			--Increments every 1 us
 			output_counter_l_0 <= output_counter_l_0 +1;
 			output_counter_l_1 <= output_counter_l_1 +1;
 			output_counter_l_2 <= output_counter_l_2 +1;
 			output_counter_l_3 <= output_counter_l_3 +1;
 			output_counter_l_4 <= output_counter_l_4 +1;
-			
-		end if; 	
+		end if
 		
 		if(rising_edge(i_sampleclock)) then
 			if(sample_edges = 0) then 
@@ -328,7 +330,7 @@ begin
 		elsif (rising_edge(us_clock)) then	
 			
 			--Output Conditions based on delays calculated or inserted
-			if(output_counter_r_0 = 0) then
+			if(output_counter_r_0 = 2) then
 				data_r_0 <= shift_register_r(0);
 			elsif(output_counter_r_0 = delay_1) then
 				data_r_1 <= shift_register_r(0);
@@ -340,7 +342,7 @@ begin
 				data_r_4 <= shift_register_r(0);
 			end if;
 			
-			if(output_counter_r_1 = 0) then
+			if(output_counter_r_1 = 2) then
 				data_r_0 <= shift_register_r(1);
 			elsif(output_counter_r_1 = delay_1) then
 				data_r_1 <= shift_register_r(1);
@@ -352,7 +354,7 @@ begin
 				data_r_4 <= shift_register_r(1);
 			end if;
 			
-			if(output_counter_r_2 = 0) then
+			if(output_counter_r_2 = 2) then
 				data_r_0 <= shift_register_r(2);
 			elsif(output_counter_r_2 = delay_1) then
 				data_r_1 <= shift_register_r(2);
@@ -364,7 +366,7 @@ begin
 				data_r_4 <= shift_register_r(2);
 			end if;
 			
-			if(output_counter_r_3 = 0) then
+			if(output_counter_r_3 = 2) then
 				data_r_0 <= shift_register_r(3);
 			elsif(output_counter_r_3 = delay_1) then
 				data_r_1 <= shift_register_r(3);
@@ -376,7 +378,7 @@ begin
 				data_r_4 <= shift_register_r(3);
 			end if;
 			
-			if(output_counter_r_4 = 0) then
+			if(output_counter_r_4 = 2) then
 				data_r_0 <= shift_register_r(4);
 			elsif(output_counter_r_4 = delay_1) then
 				data_r_1 <= shift_register_r(4);
@@ -387,15 +389,17 @@ begin
 			elsif(output_counter_r_4 = delay_4) then
 				data_r_4 <= shift_register_r(4);
 			end if;
-	
+			
+		end if; 	
+		
+		if(rising_edge(us_clock)) then
 			--Increments every 1 us
 			output_counter_r_0 <= output_counter_r_0 +1;
 			output_counter_r_1 <= output_counter_r_1 +1;
 			output_counter_r_2 <= output_counter_r_2 +1;
 			output_counter_r_3 <= output_counter_r_3 +1;
 			output_counter_r_4 <= output_counter_r_4 +1;
-			
-		end if; 	
+		end if;
 		
 		if(rising_edge(i_sampleclock)) then
 			if(sample_edges = 0) then 
