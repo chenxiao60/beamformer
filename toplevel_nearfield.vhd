@@ -103,10 +103,9 @@ begin
 				pin_rd           <= '0';
 			elsif (clockpulses = 650) then 
 				pin_rd           <= '1';
-				if(pin_int = '0') then
-					sig_datain_r <= pin_datain;
-					sig_datain_l <= pin_datain_2;
-				end if;
+			elsif(pin_int = '0') then
+				sig_datain_r <= pin_datain;
+				sig_datain_l <= pin_datain_2;
 			end if;
 				
 		elsif (rising_edge(sample_clock)) then 
