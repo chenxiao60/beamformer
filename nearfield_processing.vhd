@@ -291,15 +291,6 @@ begin
 			
 		end if; 	
 		
-		if(rising_edge(us_clock)) then
-			--Increments every 1 us
-			output_counter_l_0 <= output_counter_l_0 +1;
-			output_counter_l_1 <= output_counter_l_1 +1;
-			output_counter_l_2 <= output_counter_l_2 +1;
-			output_counter_l_3 <= output_counter_l_3 +1;
-			output_counter_l_4 <= output_counter_l_4 +1;
-		end if
-		
 		if(rising_edge(i_sampleclock)) then
 			if(sample_edges = 0) then 
 				output_counter_l_0 <= 0;
@@ -312,6 +303,15 @@ begin
 			elsif(sample_edges = 4) then
 				output_counter_l_4 <= 0;						
 			end if;
+		end if;
+		
+		if(rising_edge(us_clock)) then
+			--Increments every 1 us
+			output_counter_l_0 <= output_counter_l_0 +1;
+			output_counter_l_1 <= output_counter_l_1 +1;
+			output_counter_l_2 <= output_counter_l_2 +1;
+			output_counter_l_3 <= output_counter_l_3 +1;
+			output_counter_l_4 <= output_counter_l_4 +1;
 		end if;
 		
 	end process;
@@ -392,15 +392,6 @@ begin
 			
 		end if; 	
 		
-		if(rising_edge(us_clock)) then
-			--Increments every 1 us
-			output_counter_r_0 <= output_counter_r_0 +1;
-			output_counter_r_1 <= output_counter_r_1 +1;
-			output_counter_r_2 <= output_counter_r_2 +1;
-			output_counter_r_3 <= output_counter_r_3 +1;
-			output_counter_r_4 <= output_counter_r_4 +1;
-		end if;
-		
 		if(rising_edge(i_sampleclock)) then
 			if(sample_edges = 0) then 
 				output_counter_r_0 <= 0;
@@ -413,6 +404,15 @@ begin
 			elsif(sample_edges = 4) then
 				output_counter_r_4 <= 0;						
 			end if;
+		end if;
+	
+		if(rising_edge(us_clock)) then
+			--Increments every 1 us
+			output_counter_r_0 <= output_counter_r_0 +1;
+			output_counter_r_1 <= output_counter_r_1 +1;
+			output_counter_r_2 <= output_counter_r_2 +1;
+			output_counter_r_3 <= output_counter_r_3 +1;
+			output_counter_r_4 <= output_counter_r_4 +1;
 		end if;
 	
 end process;

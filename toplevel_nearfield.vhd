@@ -20,8 +20,8 @@ entity toplevel_nearfield is
 	pin_dataout         :    out std_logic_vector (7 downto 0); -- JA 0 to 7 
 	pin_channel         :    out std_logic_vector (4 downto 0); -- JB 0 to 4
 	
-	pin_datain          : in     std_logic_vector (7 downto 0); -- JC 0 to 7
-	pin_datain_2        : in     std_logic_vector (7 downto 0); -- JD 0 to 7
+	pin_datain_r        : in     std_logic_vector (7 downto 0); -- JC 0 to 7
+	pin_datain_l        : in     std_logic_vector (7 downto 0); -- JD 0 to 7
 	
 	pin_int             : in     std_logic; -- JB5
 	
@@ -94,22 +94,21 @@ begin
 	rd_control : process (but_reset, sys_clock, clockpulses, sample_clock)
 	begin
 		if (but_reset = '1' ) then 
-			pin_rd               <= '1';
-			clockpulses          <= 0;
-		
+			pin_rd           <= '1';
+			clockpulses      <= 0;
 		elsif (rising_edge(sys_clock)) then
-			clockpulses          <= clockpulses + 1;
-			if (clockpulses = 400) then
-				pin_rd           <= '0';
-			elsif (clockpulses = 650) then 
-				pin_rd           <= '1';
+			clockpulses      <= clockpulses + 1;
+			if (clockpulses = 0) then
+				pin_rd       <= '0';
+			elsif (clockpulses = 250) then 
+				pin_rd       <= '1';
 			elsif(pin_int = '0') then
-				sig_datain_r <= pin_datain;
-				sig_datain_l <= pin_datain_2;
+				sig_datain_r <= pin_datain_r;
+				sig_datain_l <= pin_datain_l;
+			elsif(rising_edge(sample_clock)) then
+				clockpulses  <= 0;
 			end if;
-				
-		elsif (rising_edge(sample_clock)) then 
-				clockpulses      <= 0; 
+
 		end if;
 	end process;	
 	
