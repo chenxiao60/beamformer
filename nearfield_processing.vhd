@@ -216,7 +216,7 @@ begin
 end process; 
 	
 --************* Processes data by inserting delays **************-- 
-speaker_processing_l : process(i_reset, us_clock, i_sampleclock, sample_period)
+speaker_processing_l : process(i_reset, us_clock, i_sampleclock)
 begin
 		
 		if(i_reset = '1') then
@@ -239,6 +239,8 @@ begin
 				data_l_3 <= shift_register_l(0);
 			elsif(output_counter_l_0 = delay_4) then
 				data_l_4 <= shift_register_l(0);
+			elsif(output_counter_l_0 = (sample_period*5-1)) then
+				output_counter_l_0 <= 0;
 			end if;
 			
 			if(output_counter_l_1 = 2) then
@@ -251,6 +253,8 @@ begin
 				data_l_3 <= shift_register_l(1);
 			elsif(output_counter_l_1 = delay_4) then
 				data_l_4 <= shift_register_l(1);
+			elsif(output_counter_l_1 = (sample_period*5-1)) then
+				output_counter_l_1 <= 0;
 			end if;
 			
 			if(output_counter_l_2 = 2) then
@@ -263,6 +267,8 @@ begin
 				data_l_3 <= shift_register_l(2);
 			elsif(output_counter_l_2 = delay_4) then
 				data_l_4 <= shift_register_l(2);
+			elsif(output_counter_l_2 = (sample_period*5-1)) then
+				output_counter_l_2 <= 0;
 			end if;
 			
 			if(output_counter_l_3 = 2) then
@@ -275,6 +281,8 @@ begin
 				data_l_3 <= shift_register_l(3);
 			elsif(output_counter_l_3 = delay_4) then
 				data_l_4 <= shift_register_l(3);
+			elsif(output_counter_l_3 = (sample_period*5-1)) then
+				output_counter_l_3 <= 0;
 			end if;
 			
 			if(output_counter_l_4 = 2) then
@@ -287,37 +295,22 @@ begin
 				data_l_3 <= shift_register_l(4);
 			elsif(output_counter_l_4 = delay_4) then
 				data_l_4 <= shift_register_l(4);
+			elsif(output_counter_l_4 = (sample_period*5-1)) then
+				output_counter_l_4 <= 0;
 			end if;
 			
-		end if; 	
-		
-		if(rising_edge(i_sampleclock)) then
-			if(sample_edges = 0) then 
-				output_counter_l_0 <= 0;
-			elsif(sample_edges = 1) then
-				output_counter_l_1 <= 0;
-			elsif(sample_edges = 2) then
-				output_counter_l_2 <= 0;
-			elsif(sample_edges = 3) then
-				output_counter_l_3 <= 0;
-			elsif(sample_edges = 4) then
-				output_counter_l_4 <= 0;						
-			end if;
-		end if;
-		
-		if(rising_edge(us_clock)) then
-			--Increments every 1 us
 			output_counter_l_0 <= output_counter_l_0 +1;
 			output_counter_l_1 <= output_counter_l_1 +1;
 			output_counter_l_2 <= output_counter_l_2 +1;
 			output_counter_l_3 <= output_counter_l_3 +1;
 			output_counter_l_4 <= output_counter_l_4 +1;
-		end if;
+		
+		end if; 	
 		
 	end process;
 
 --************* Processes data by inserting delays **************-- 
-speaker_processing_r : process(i_reset, us_clock, i_sampleclock, sample_period)
+speaker_processing_r : process(i_reset, us_clock, i_sampleclock)
 begin
 		
 		if(i_reset = '1') then
@@ -326,9 +319,9 @@ begin
 			output_counter_r_2 <= (sample_period*2);
 			output_counter_r_3 <= (sample_period*3);
 			output_counter_r_4 <= (sample_period*4);												
-
-		elsif (rising_edge(us_clock)) then	
 			
+		elsif (rising_edge(us_clock)) then	
+
 			--Output Conditions based on delays calculated or inserted
 			if(output_counter_r_0 = 2) then
 				data_r_0 <= shift_register_r(0);
@@ -340,6 +333,8 @@ begin
 				data_r_3 <= shift_register_r(0);
 			elsif(output_counter_r_0 = delay_4) then
 				data_r_4 <= shift_register_r(0);
+			elsif(output_counter_r_0 = (sample_period*5-1)) then
+				output_counter_r_0    <= 0;
 			end if;
 			
 			if(output_counter_r_1 = 2) then
@@ -352,6 +347,8 @@ begin
 				data_r_3 <= shift_register_r(1);
 			elsif(output_counter_r_1 = delay_4) then
 				data_r_4 <= shift_register_r(1);
+			elsif(output_counter_r_1 = (sample_period*5-1)) then
+				output_counter_r_1    <= 0;
 			end if;
 			
 			if(output_counter_r_2 = 2) then
@@ -364,8 +361,10 @@ begin
 				data_r_3 <= shift_register_r(2);
 			elsif(output_counter_r_2 = delay_4) then
 				data_r_4 <= shift_register_r(2);
+			elsif(output_counter_r_2 = (sample_period*5-1)) then
+				output_counter_r_2    <= 0;
 			end if;
-			
+			 
 			if(output_counter_r_3 = 2) then
 				data_r_0 <= shift_register_r(3);
 			elsif(output_counter_r_3 = delay_1) then
@@ -376,6 +375,8 @@ begin
 				data_r_3 <= shift_register_r(3);
 			elsif(output_counter_r_3 = delay_4) then
 				data_r_4 <= shift_register_r(3);
+			elsif(output_counter_r_3 = (sample_period*5-1)) then
+				output_counter_r_3    <= 0;
 			end if;
 			
 			if(output_counter_r_4 = 2) then
@@ -388,33 +389,19 @@ begin
 				data_r_3 <= shift_register_r(4);
 			elsif(output_counter_r_4 = delay_4) then
 				data_r_4 <= shift_register_r(4);
+			elsif(output_counter_r_4 = (sample_period*5-1)) then
+				output_counter_r_4    <= 0;
 			end if;
-			
-		end if; 	
 		
-		if(rising_edge(i_sampleclock)) then
-			if(sample_edges = 0) then 
-				output_counter_r_0 <= 0;
-			elsif(sample_edges = 1) then
-				output_counter_r_1 <= 0;
-			elsif(sample_edges = 2) then
-				output_counter_r_2 <= 0;
-			elsif(sample_edges = 3) then
-				output_counter_r_3 <= 0;
-			elsif(sample_edges = 4) then
-				output_counter_r_4 <= 0;						
-			end if;
-		end if;
-	
-		if(rising_edge(us_clock)) then
-			--Increments every 1 us
 			output_counter_r_0 <= output_counter_r_0 +1;
 			output_counter_r_1 <= output_counter_r_1 +1;
 			output_counter_r_2 <= output_counter_r_2 +1;
 			output_counter_r_3 <= output_counter_r_3 +1;
 			output_counter_r_4 <= output_counter_r_4 +1;
-		end if;
-	
+
+		end if; 	
+		
+
 end process;
 
 ----************* Output Selector (through MUX) *************--
