@@ -56,20 +56,20 @@ architecture Behavioral of nearfield_processing is
 	--Counts through delays
 	signal sample_edges       : integer range 0 to 7;
 
-	signal output_counter_l_0 : integer range 0 to 127;
-	signal output_counter_r_0 : integer range 0 to 127;
+	signal output_counter_l_0 : integer range 0 to 127 := 0;
+	signal output_counter_r_0 : integer range 0 to 127 := 0;
 	
-	signal output_counter_l_1 : integer range 0 to 127;
-	signal output_counter_r_1 : integer range 0 to 127;
+	signal output_counter_l_1 : integer range 0 to 127 := 0;
+	signal output_counter_r_1 : integer range 0 to 127 := 0;
 	
-	signal output_counter_l_2 : integer range 0 to 127;
-	signal output_counter_r_2 : integer range 0 to 127;
+	signal output_counter_l_2 : integer range 0 to 127 := 0;
+	signal output_counter_r_2 : integer range 0 to 127 := 0;
 	
-	signal output_counter_l_3 : integer range 0 to 127;
-	signal output_counter_r_3 : integer range 0 to 127;
+	signal output_counter_l_3 : integer range 0 to 127 := 0;
+	signal output_counter_r_3 : integer range 0 to 127 := 0;
 	
-	signal output_counter_l_4 : integer range 0 to 127;
-	signal output_counter_r_4 : integer range 0 to 127;
+	signal output_counter_l_4 : integer range 0 to 127 := 0;
+	signal output_counter_r_4 : integer range 0 to 127 := 0;
 
 	-- Counts through 5 different channels 
 	signal mux_counter       : integer range 0 to 5;
@@ -216,15 +216,21 @@ begin
 end process; 
 	
 --************* Processes data by inserting delays **************-- 
-speaker_processing_l : process(i_reset, us_clock, i_sampleclock, sample_period)
+speaker_processing_l : process(i_reset, us_clock, sample_period, i_clock)
 begin
 		
+	if(rising_edge(i_clock)) then
 		if(i_reset = '1') then
 			output_counter_l_0 <= 0;
 			output_counter_l_1 <= sample_period;
 			output_counter_l_2 <= (sample_period*2);
 			output_counter_l_3 <= (sample_period*3);
-			output_counter_l_4 <= (sample_period*4);												
+			output_counter_l_4 <= (sample_period*4);	
+			data_l_0           <= X"00";
+			data_l_1           <= X"00";
+			data_l_2           <= X"00";
+			data_l_3           <= X"00";
+			data_l_4           <= X"00";
 
 		elsif (rising_edge(us_clock)) then	
 			
@@ -306,19 +312,24 @@ begin
 			output_counter_l_4 <= output_counter_l_4 +1;
 		
 		end if; 	
-		
-	end process;
+	end if;
+end process;
 
 --************* Processes data by inserting delays **************-- 
-speaker_processing_r : process(i_reset, us_clock, i_sampleclock, sample_period)
+speaker_processing_r : process(i_reset, us_clock, sample_period, i_clock)
 begin
-		
+	if(rising_edge(i_clock)) then	 
 		if(i_reset = '1') then
 			output_counter_r_0 <= 0;
 			output_counter_r_1 <= sample_period;
 			output_counter_r_2 <= (sample_period*2);
 			output_counter_r_3 <= (sample_period*3);
-			output_counter_r_4 <= (sample_period*4);												
+			output_counter_r_4 <= (sample_period*4);	
+			data_r_0           <= X"00";
+			data_r_1           <= X"00";
+			data_r_2           <= X"00";
+			data_r_3           <= X"00";
+			data_r_4           <= X"00";											
 			
 		elsif (rising_edge(us_clock)) then	
 
@@ -400,14 +411,14 @@ begin
 			output_counter_r_4 <= output_counter_r_4 +1;
 
 		end if; 	
-		
-
+	end if;
 end process;
 
 ----************* Output Selector (through MUX) *************--
 output_selector : process (i_reset, us_clock, i_clock, clockpulses)
 begin
 	
+	if(rising_edge(i_clock)) then
 	if (i_reset = '1') then
 		mux_counter <= 0;
 	
@@ -457,7 +468,7 @@ begin
 
 		end if;
 	end if;
-	
+	end if;
 end process;
 
 --********************* Combinatorial to add data together **************************--
