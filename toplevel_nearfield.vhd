@@ -110,7 +110,7 @@ begin
 			elsif(pin_int = '0') then
 				sig_datain_r <= pin_datain_r;
 				sig_datain_l <= pin_datain_l;
-			elsif(clockpulses = 2199) then
+			elsif(rising_edge(sample_clock)) then
 				clockpulses  <= 0;
 			end if;
 
