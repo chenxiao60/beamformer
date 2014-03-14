@@ -41,7 +41,12 @@ architecture Behavioral of testbench_nearfield is
 		generic(
 		divisor           : integer := 50; -- difference between system clock 1 us 
 		speed_sound       : integer := 13397; -- in inches/second
-		speaker_distance  : integer := 2 -- in inches
+		speaker_distance  : integer := 2; -- in inches
+		sample_period     : integer := 22;
+		delay_1           : integer := 24; --(42+2)
+		delay_2           : integer := 46; --(72+2)
+		delay_3           : integer := 68; --(91+2)
+		delay_4           : integer := 90 --(97+2)
 		);
 	
 		port(
@@ -153,9 +158,14 @@ begin
 	
 	fpga : nearfield_processing
 	generic map(
-		divisor           	=> 50,
+		divisor             => 50,
 		speed_sound         => 13397,
-		speaker_distance    => 2
+		speaker_distance    => 2,
+		sample_period       => 22,
+		delay_1             => 24, --(42+2)
+		delay_2             => 46, --(72+2)
+		delay_3             => 68, --(91+2)
+		delay_4             => 90 --(97+2)
 		)
 
 	port map(

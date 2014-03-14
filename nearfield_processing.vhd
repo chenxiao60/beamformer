@@ -14,7 +14,12 @@ entity nearfield_processing is
 	generic(
 	divisor           : integer := 50; -- difference between system clock 1 us 
 	speed_sound       : integer := 13397; -- in inches/second
-	speaker_distance  : integer := 2 -- in inches
+	speaker_distance  : integer := 2; -- in inches
+	sample_period     : integer := 22;
+	delay_1           : integer := 24; --(42+2)
+	delay_2           : integer := 46; --(72+2)
+	delay_3           : integer := 68; --(91+2)
+	delay_4           : integer := 90 --(97+2)
 	);
 	
 	port(
@@ -93,11 +98,11 @@ architecture Behavioral of nearfield_processing is
 					
 	
 	--Delays & Calculation Signals 
-	signal sample_period     : integer range 0 to 25;
-	signal delay_1           : integer range 0 to 127;
-	signal delay_2           : integer range 0 to 127;
-	signal delay_3           : integer range 0 to 127;
-	signal delay_4           : integer range 0 to 127;
+--	signal sample_period     : integer range 0 to 25;
+--	signal delay_1           : integer range 0 to 127;
+--	signal delay_2           : integer range 0 to 127;
+--	signal delay_3           : integer range 0 to 127;
+--	signal delay_4           : integer range 0 to 127;
 	signal us_clock          : std_logic;
 	signal ds_squareroot     : integer range 0 to 100;
 	signal ds_squared        : integer range 0 to 5000;
@@ -157,11 +162,11 @@ begin
 
 		--********** Manually Set Delays ****************--
 		
-		delay_1 <= (22+2); --42
-		delay_2 <= (44+2); --72
-		delay_3 <= (66+2); --91
-		delay_4 <= (88+2); --97
-		sample_period <= 22;
+--		delay_1 <= (22+2); --42
+--		delay_2 <= (44+2); --72
+--		delay_3 <= (66+2); --91
+--		delay_4 <= (88+2); --97
+--		sample_period <= 22;
 		
 		--********** End Manually Set Delays ************--
 end process;
@@ -216,10 +221,10 @@ begin
 end process; 
 	
 --************* Processes data by inserting delays **************-- 
-speaker_processing_l : process(i_reset, us_clock, sample_period, i_clock)
+speaker_processing_l : process(us_clock)
 begin
 		
-	if(rising_edge(i_clock)) then
+	if(rising_edge(us_clock)) then
 		if(i_reset = '1') then
 			output_counter_l_0 <= 0;
 			output_counter_l_1 <= sample_period;
@@ -232,7 +237,7 @@ begin
 			data_l_3           <= X"00";
 			data_l_4           <= X"00";
 
-		elsif (rising_edge(us_clock)) then	
+		else
 			
 			--Output Conditions based on delays calculated or inserted
 			if(output_counter_l_0 = 2) then
@@ -316,9 +321,9 @@ begin
 end process;
 
 --************* Processes data by inserting delays **************-- 
-speaker_processing_r : process(i_reset, us_clock, sample_period, i_clock)
+speaker_processing_r : process(us_clock)
 begin
-	if(rising_edge(i_clock)) then	 
+	if(rising_edge(us_clock)) then	 
 		if(i_reset = '1') then
 			output_counter_r_0 <= 0;
 			output_counter_r_1 <= sample_period;
@@ -331,7 +336,7 @@ begin
 			data_r_3           <= X"00";
 			data_r_4           <= X"00";											
 			
-		elsif (rising_edge(us_clock)) then	
+		else
 
 			--Output Conditions based on delays calculated or inserted
 			if(output_counter_r_0 = 2) then
