@@ -216,7 +216,7 @@ begin
 end process; 
 	
 --************* Processes data by inserting delays **************-- 
-speaker_processing_l : process(i_reset, us_clock, i_sampleclock)
+speaker_processing_l : process(i_reset, us_clock, i_sampleclock, sample_period)
 begin
 		
 		if(i_reset = '1') then
@@ -310,7 +310,7 @@ begin
 	end process;
 
 --************* Processes data by inserting delays **************-- 
-speaker_processing_r : process(i_reset, us_clock, i_sampleclock)
+speaker_processing_r : process(i_reset, us_clock, i_sampleclock, sample_period)
 begin
 		
 		if(i_reset = '1') then
