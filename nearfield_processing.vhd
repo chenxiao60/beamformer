@@ -16,10 +16,10 @@ entity nearfield_processing is
 	speed_sound       : integer := 13397; -- in inches/second
 	speaker_distance  : integer := 2; -- in inches
 	sample_period     : integer := 22;
-	delay_1           : integer := 24; --(42+2)
-	delay_2           : integer := 46; --(72+2)
-	delay_3           : integer := 68; --(91+2)
-	delay_4           : integer := 90 --(97+2)
+	delay_1           : integer := 44; --(42+2)
+	delay_2           : integer := 74; --(72+2)
+	delay_3           : integer := 93; --(91+2)
+	delay_4           : integer := 99 --(97+2)
 	);
 	
 	port(
