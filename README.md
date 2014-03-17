@@ -1,4 +1,4 @@
-beamformer_hdl
+beamformer
 ==============
 
-VHDL files for senior tech project
+Source files for senior tech project
