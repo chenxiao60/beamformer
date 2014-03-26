@@ -106,12 +106,16 @@ architecture Behavioral of nearfield_processing is
 	signal ds_squareroot     : integer range 0 to 100;
 	signal ds_squared        : integer range 0 to 5000;
 	
+	signal distance          : integer range 0 to 127;
+	
 	--Clock Division
 	signal clockpulses       : integer range 0 to 127;
 	
 begin
-	--tying output signals
-	o_us_clock                       <= us_clock;
+
+--************** Tying output signals ******************--
+	
+	o_us_clock    <= us_clock;
 
 --************** From system clock to 1 us *************--
 clock_division : process(i_reset, i_clock)
@@ -128,24 +132,28 @@ begin
 	end if;
 end process;
 
+--*************** Distance to integer **************--
+	
+	distance     <= conv_integer(i_distance);
+
 --*************** Distance to delay converter*******--
 distance_to_delay : process (i_clock)
 begin
 	
 	if(i_reset = '1') then
 		delay_1        <= 0;
-		delay_2        <= 0;
-		delay_3        <= 0;
-		delay_4        <= 0;
+--		delay_2        <= 0;
+--		delay_3        <= 0;
+--		delay_4        <= 0;
 		ds_squared     <= 0;
 		ds_squareroot  <= 0;
 	elsif(rising_edge(i_clock)) then
 		-- Delay 1 calculations
-		ds_squared <= (i_distance*i_distance + (speaker_distance)*(speaker_distance));
+		ds_squared <= (distance*distance + (speaker_distance)*(speaker_distance));
 		for n in 0 to 20 loop
 			ds_squareroot <=  ((50 + ds_squared/ds_squareroot)/2);
 		end loop;
-		delay_1 <= (ds_squareroot - i_distance)/ speed_sound;
+		delay_1 <= (ds_squareroot - distance)/ speed_sound;
 
 --		-- Delay 2 calculations
 --		ds_squared <= (i_distance*i_distance + (speaker_distance*2)*(speaker_distance*2));
