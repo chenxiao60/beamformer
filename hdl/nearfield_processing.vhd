@@ -6,7 +6,6 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
 library UNISIM;
 use UNISIM.VComponents.all;
 
@@ -99,7 +98,7 @@ architecture Behavioral of nearfield_processing is
 	
 	--Delays & Calculation Signals 
 --	signal sample_period     : integer range 0 to 25;
---	signal delay_1           : integer range 0 to 127;
+	signal delay_1           : integer range 0 to 127;
 --	signal delay_2           : integer range 0 to 127;
 --	signal delay_3           : integer range 0 to 127;
 --	signal delay_4           : integer range 0 to 127;
@@ -132,6 +131,15 @@ end process;
 --*************** Distance to delay converter*******--
 distance_to_delay : process (i_clock)
 begin
+	
+	if(i_reset = '1') then
+		delay_1        <= 0;
+		delay_2        <= 0;
+		delay_3        <= 0;
+		delay_4        <= 0;
+		ds_squared     <= 0;
+		ds_squareroot  <= 0;
+	elsif(rising_edge(i_clock)) then
 		-- Delay 1 calculations
 		ds_squared <= (i_distance*i_distance + (speaker_distance)*(speaker_distance));
 		for n in 0 to 20 loop
@@ -159,7 +167,8 @@ begin
 --			ds_squareroot <=  ((50 + ds_squared/ds_squareroot)/2);
 --		end loop;
 --		delay_4 <= (ds_squareroot - i_distance)/ speed_sound;		
-
+	end if;
+		
 		--********** Manually Set Delays ****************--
 		
 --		delay_1 <= (22+2); --42

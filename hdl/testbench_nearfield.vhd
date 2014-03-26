@@ -94,7 +94,7 @@ begin
 	but_reset <= '0', '1' after 100 ns, '0' after 1000 ns;
 	pin_int   <= '0';
 	
-	
+	swt_distance <= "11000";
 	
 	-- *************** Test Data Being Generated **********--
 	generate_data: process (sample_clock)
