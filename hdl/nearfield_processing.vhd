@@ -57,7 +57,20 @@ architecture Behavioral of nearfield_processing is
 	signal data_l_2          : std_logic_vector(7 downto 0);
 	signal data_l_3          : std_logic_vector(7 downto 0);
 	signal data_l_4          : std_logic_vector(7 downto 0);
-
+	
+	--Anti-Sound data signals
+	signal anti_data_r_0     : std_logic_vector(7 downto 0);
+	signal anti_data_r_1     : std_logic_vector(7 downto 0);
+	signal anti_data_r_2     : std_logic_vector(7 downto 0);
+	signal anti_data_r_3     : std_logic_vector(7 downto 0);
+	signal anti_data_r_4     : std_logic_vector(7 downto 0);
+	
+	signal anti_data_l_0     : std_logic_vector(7 downto 0);
+	signal anti_data_l_1     : std_logic_vector(7 downto 0);
+	signal anti_data_l_2     : std_logic_vector(7 downto 0);
+	signal anti_data_l_3     : std_logic_vector(7 downto 0);
+	signal anti_data_l_4     : std_logic_vector(7 downto 0);
+	
 	--Counts through delays
 	signal sample_edges       : integer range 0 to 7;
 
@@ -89,6 +102,17 @@ architecture Behavioral of nearfield_processing is
 	signal temp_extended_2_3 : std_logic_vector (8 downto 0);
 	signal temp_extended_4   : std_logic_vector (8 downto 0);
 	signal temp_extended_2_4 : std_logic_vector (8 downto 0);
+	
+	signal anti_temp_extended_0   : std_logic_vector (8 downto 0);
+	signal anti_temp_extended_2_0 : std_logic_vector (8 downto 0);
+	signal anti_temp_extended_1   : std_logic_vector (8 downto 0);
+	signal anti_temp_extended_2_1 : std_logic_vector (8 downto 0);
+	signal anti_temp_extended_2   : std_logic_vector (8 downto 0);
+	signal anti_temp_extended_2_2 : std_logic_vector (8 downto 0);
+	signal anti_temp_extended_3   : std_logic_vector (8 downto 0);
+	signal anti_temp_extended_2_3 : std_logic_vector (8 downto 0);
+	signal anti_temp_extended_4   : std_logic_vector (8 downto 0);
+	signal anti_temp_extended_2_4 : std_logic_vector (8 downto 0);
 	
 	signal result_0          : std_logic_vector (8 downto 0);
 	signal result_1          : std_logic_vector (8 downto 0);
@@ -434,6 +458,36 @@ begin
 			end if;
 		
 		end if; 	
+	end if;
+end process;
+
+--*************** Anti-Sound Being Generated    *************--
+anti_sound: process(i_reset)
+begin
+	if(i_reset = '1') then
+		anti_data_r_0 <= X"00";
+		anti_data_r_1 <= X"00";
+		anti_data_r_2 <= X"00";
+		anti_data_r_3 <= X"00";
+		anti_data_r_4 <= X"00";
+		
+		anti_data_l_0 <= X"00";
+		anti_data_l_1 <= X"00";
+		anti_data_l_2 <= X"00";
+		anti_data_l_3 <= X"00";
+		anti_data_l_4 <= X"00";
+	else
+		anti_data_r_0 <= NOT data_r_0;
+		anti_data_r_1 <= NOT data_r_1;
+		anti_data_r_2 <= NOT data_r_2;
+		anti_data_r_3 <= NOT data_r_3;
+		anti_data_r_4 <= NOT data_r_4;
+		
+		anti_data_l_0 <= NOT data_l_0;
+		anti_data_l_1 <= NOT data_l_1;
+		anti_data_l_2 <= NOT data_l_2;
+		anti_data_l_3 <= NOT data_l_3;
+		anti_data_l_4 <= NOT data_l_4;
 	end if;
 end process;
 
