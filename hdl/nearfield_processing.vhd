@@ -16,11 +16,7 @@ entity nearfield_processing is
 	divisor           : integer := 50; -- difference between system clock 1 us 
 	speed_sound       : integer := 13397; -- in inches/second
 	speaker_distance  : integer := 2; -- in inches
-	sample_period     : integer := 22;
---	delay_1           : integer := 44; --(42+2)
-	delay_2           : integer := 74; --(72+2)
-	delay_3           : integer := 93; --(91+2)
-	delay_4           : integer := 99 --(97+2)
+	sample_period     : integer := 22
 	);
 	
 	port(
@@ -99,11 +95,10 @@ architecture Behavioral of nearfield_processing is
 					
 	
 	--Delays & Calculation Signals 
---	signal sample_period     : integer range 0 to 25;
 	signal delay_1           : integer range 0 to 127;
---	signal delay_2           : integer range 0 to 127;
---	signal delay_3           : integer range 0 to 127;
---	signal delay_4           : integer range 0 to 127;
+	signal delay_2           : integer range 0 to 127;
+	signal delay_3           : integer range 0 to 127;
+	signal delay_4           : integer range 0 to 127;
 	signal us_clock          : std_logic;
 	signal ds_squareroot     : integer range 0 to 100;
 	signal ds_squared        : integer range 0 to 5000;
@@ -144,9 +139,9 @@ begin
 	
 	if(i_reset = '1') then
 		delay_1        <= 0;
---		delay_2        <= 0;
---		delay_3        <= 0;
---		delay_4        <= 0;
+		delay_2        <= 0;
+		delay_3        <= 0;
+		delay_4        <= 0;
 		ds_squared     <= 0;
 		ds_squareroot  <= 0;
 	elsif(rising_edge(i_clock)) then
@@ -157,26 +152,26 @@ begin
 		end loop;
 		delay_1 <= (ds_squareroot - distance)/ speed_sound;
 
---		-- Delay 2 calculations
---		ds_squared <= (i_distance*i_distance + (speaker_distance*2)*(speaker_distance*2));
---		for n in 0 to 20 loop
---			ds_squareroot <=  ((50 + ds_squared/ds_squareroot)/2);
---		end loop;
---		delay_2 <= (ds_squareroot - i_distance)/ speed_sound;
---		
---		-- Delay 3 calculations
---		ds_squared <= (i_distance*i_distance + (speaker_distance*3)*(speaker_distance*3));
---		for n in 0 to 20 loop
---			ds_squareroot <=  ((50 + ds_squared/ds_squareroot)/2);
---		end loop;
---		delay_3 <= (ds_squareroot - i_distance)/ speed_sound;
---
---		-- Delay 4 calculations
---		ds_squared <= (i_distance*i_distance + (speaker_distance*4)*(speaker_distance*4));
---		for n in 0 to 20 loop
---			ds_squareroot <=  ((50 + ds_squared/ds_squareroot)/2);
---		end loop;
---		delay_4 <= (ds_squareroot - i_distance)/ speed_sound;		
+		-- Delay 2 calculations
+		ds_squared <= (distance*distance + (speaker_distance*2)*(speaker_distance*2));
+		for n in 0 to 20 loop
+			ds_squareroot <=  ((50 + ds_squared/ds_squareroot)/2);
+		end loop;
+		delay_2 <= (ds_squareroot - distance)/ speed_sound;
+		
+		-- Delay 3 calculations
+		ds_squared <= (distance*distance + (speaker_distance*3)*(speaker_distance*3));
+		for n in 0 to 20 loop
+			ds_squareroot <=  ((50 + ds_squared/ds_squareroot)/2);
+		end loop;
+		delay_3 <= (ds_squareroot - distance)/ speed_sound;
+
+		-- Delay 4 calculations
+		ds_squared <= (distance*distance + (speaker_distance*4)*(speaker_distance*4));
+		for n in 0 to 20 loop
+			ds_squareroot <=  ((50 + ds_squared/ds_squareroot)/2);
+		end loop;
+		delay_4 <= (ds_squareroot - distance)/ speed_sound;		
 	end if;
 		
 		--********** Manually Set Delays ****************--
