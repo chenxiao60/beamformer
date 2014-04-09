@@ -101,21 +101,20 @@ architecture Behavioral of nearfield_processing is
 	signal delay_4           : integer range 0 to 127;
 	signal us_clock          : std_logic;
 	
-	signal sqrt_est          : integer range 0 to 31;
+	signal sqrt_est          : integer range 0 to 31  := 25;
 	
 	signal dif_dist_sq_1     : integer range 0 to 511;
 	signal dif_dist_sq_2     : integer range 0 to 511;
 	signal dif_dist_sq_3     : integer range 0 to 511;
 	signal dif_dist_sq_4     : integer range 0 to 511;
 	
-	signal dif_dist_sqrt_1   : integer range 0 to 511;
-	signal dif_dist_sqrt_2   : integer range 0 to 511;
-	signal dif_dist_sqrt_3   : integer range 0 to 511;
-	signal dif_dist_sqrt_4   : integer range 0 to 511;
+	signal dif_dist_sqrt_1   : integer range 0 to 511 := 25;
+	signal dif_dist_sqrt_2   : integer range 0 to 511 := 25;
+	signal dif_dist_sqrt_3   : integer range 0 to 511 := 25;
+	signal dif_dist_sqrt_4   : integer range 0 to 511 := 25;
 
 	-- Distance to Delay Calculation Signals
-	signal distance          : integer range 0 to 127;
-	
+	signal distance          : integer range 0 to 127;	
 	
 	--Clock Division
 	signal clockpulses       : integer range 0 to 127;
@@ -193,10 +192,10 @@ begin
 			dif_dist_sqrt_4  <= ((dif_dist_sqrt_4 + (dif_dist_sq_4 / dif_dist_sqrt_4))/2);		
 			
 		elsif(clockpulses = 6) then
-			delay_1    <= ((dif_dist_sqrt_1 - distance)/ speed_sound);
-			delay_2    <= ((dif_dist_sqrt_2 - distance)/ speed_sound);
-			delay_3    <= ((dif_dist_sqrt_3 - distance)/ speed_sound);
-			delay_4    <= ((dif_dist_sqrt_4 - distance)/ speed_sound);
+			delay_1    <= (10**6 * (dif_dist_sqrt_1 - distance)/ speed_sound);
+			delay_2    <= (10**6 * (dif_dist_sqrt_2 - distance)/ speed_sound);
+			delay_3    <= (10**6 * (dif_dist_sqrt_3 - distance)/ speed_sound);
+			delay_4    <= (10**6 * (dif_dist_sqrt_4 - distance)/ speed_sound);
 		end if;
 	
 	end if;
