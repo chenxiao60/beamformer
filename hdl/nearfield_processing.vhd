@@ -169,28 +169,28 @@ begin
 			dif_dist_sqrt_4 <= sqrt_est;
 						
 		elsif(clockpulses = 2) then
-			dif_dist_sqrt_1  <= 0.5 *(dif_dist_sqrt_1 + (dif_dist_sq_1 / dif_dist_sqrt_1));
-			dif_dist_sqrt_2  <= 0.5 *(dif_dist_sqrt_2 + (dif_dist_sq_2 / dif_dist_sqrt_2));
-			dif_dist_sqrt_3  <= 0.5 *(dif_dist_sqrt_3 + (dif_dist_sq_3 / dif_dist_sqrt_3));
-			dif_dist_sqrt_4  <= 0.5 *(dif_dist_sqrt_4 + (dif_dist_sq_4 / dif_dist_sqrt_4));
+			dif_dist_sqrt_1  <= ((dif_dist_sqrt_1 + (dif_dist_sq_1 / dif_dist_sqrt_1))/2);
+			dif_dist_sqrt_2  <= ((dif_dist_sqrt_2 + (dif_dist_sq_2 / dif_dist_sqrt_2))/2);
+			dif_dist_sqrt_3  <= ((dif_dist_sqrt_3 + (dif_dist_sq_3 / dif_dist_sqrt_3))/2);
+			dif_dist_sqrt_4  <= ((dif_dist_sqrt_4 + (dif_dist_sq_4 / dif_dist_sqrt_4))/2);
 			
 		elsif(clockpulses = 3) then
-			dif_dist_sqrt_1  <= 0.5 *(dif_dist_sqrt_1 + (dif_dist_sq_1 / dif_dist_sqrt_1));
-			dif_dist_sqrt_2  <= 0.5 *(dif_dist_sqrt_2 + (dif_dist_sq_2 / dif_dist_sqrt_2));
-			dif_dist_sqrt_3  <= 0.5 *(dif_dist_sqrt_3 + (dif_dist_sq_3 / dif_dist_sqrt_3));
-			dif_dist_sqrt_4  <= 0.5 *(dif_dist_sqrt_4 + (dif_dist_sq_4 / dif_dist_sqrt_4));
+			dif_dist_sqrt_1  <= ((dif_dist_sqrt_1 + (dif_dist_sq_1 / dif_dist_sqrt_1))/2);
+			dif_dist_sqrt_2  <= ((dif_dist_sqrt_2 + (dif_dist_sq_2 / dif_dist_sqrt_2))/2);
+			dif_dist_sqrt_3  <= ((dif_dist_sqrt_3 + (dif_dist_sq_3 / dif_dist_sqrt_3))/2);
+			dif_dist_sqrt_4  <= ((dif_dist_sqrt_4 + (dif_dist_sq_4 / dif_dist_sqrt_4))/2);
 						
 		elsif(clockpulses = 4) then
-			dif_dist_sqrt_1  <= 0.5 *(dif_dist_sqrt_1 + (dif_dist_sq_1 / dif_dist_sqrt_1));
-			dif_dist_sqrt_2  <= 0.5 *(dif_dist_sqrt_2 + (dif_dist_sq_2 / dif_dist_sqrt_2));
-			dif_dist_sqrt_3  <= 0.5 *(dif_dist_sqrt_3 + (dif_dist_sq_3 / dif_dist_sqrt_3));
-			dif_dist_sqrt_4  <= 0.5 *(dif_dist_sqrt_4 + (dif_dist_sq_4 / dif_dist_sqrt_4));
+			dif_dist_sqrt_1  <= ((dif_dist_sqrt_1 + (dif_dist_sq_1 / dif_dist_sqrt_1))/2);
+			dif_dist_sqrt_2  <= ((dif_dist_sqrt_2 + (dif_dist_sq_2 / dif_dist_sqrt_2))/2);
+			dif_dist_sqrt_3  <= ((dif_dist_sqrt_3 + (dif_dist_sq_3 / dif_dist_sqrt_3))/2);
+			dif_dist_sqrt_4  <= ((dif_dist_sqrt_4 + (dif_dist_sq_4 / dif_dist_sqrt_4))/2);
 						
 		elsif(clockpulses = 5) then
-			dif_dist_sqrt_1  <= 0.5 *(dif_dist_sqrt_1 + (dif_dist_sq_1 / dif_dist_sqrt_1));
-			dif_dist_sqrt_2  <= 0.5 *(dif_dist_sqrt_2 + (dif_dist_sq_2 / dif_dist_sqrt_2));
-			dif_dist_sqrt_3  <= 0.5 *(dif_dist_sqrt_3 + (dif_dist_sq_3 / dif_dist_sqrt_3));
-			dif_dist_sqrt_4  <= 0.5 *(dif_dist_sqrt_4 + (dif_dist_sq_4 / dif_dist_sqrt_4));			
+			dif_dist_sqrt_1  <= ((dif_dist_sqrt_1 + (dif_dist_sq_1 / dif_dist_sqrt_1))/2);
+			dif_dist_sqrt_2  <= ((dif_dist_sqrt_2 + (dif_dist_sq_2 / dif_dist_sqrt_2))/2);
+			dif_dist_sqrt_3  <= ((dif_dist_sqrt_3 + (dif_dist_sq_3 / dif_dist_sqrt_3))/2);
+			dif_dist_sqrt_4  <= ((dif_dist_sqrt_4 + (dif_dist_sq_4 / dif_dist_sqrt_4))/2);		
 			
 		elsif(clockpulses = 6) then
 			delay_1    <= ((dif_dist_sqrt_1 - distance)/ speed_sound);
