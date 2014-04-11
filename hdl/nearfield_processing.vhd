@@ -15,7 +15,7 @@ entity nearfield_processing is
 	generic(
 	divisor           : integer := 50; -- difference between system clock 1 us 
 	speed_sound       : integer := 13397; -- in inches/second
-	speaker_distance  : integer := 2; -- in inches
+	speaker_distance  : integer := 2 * 10**3; -- in inches
 	sample_period     : integer := 22
 	);
 	
@@ -101,17 +101,22 @@ architecture Behavioral of nearfield_processing is
 	signal delay_4           : integer range 0 to 127;
 	signal us_clock          : std_logic;
 	
-	signal sqrt_est          : integer range 0 to 31  := 25;
+	signal sqrt_est          : integer range 0 to 31 * 10**3  := 25 * 10**3;
 	
-	signal dif_dist_sq_1     : integer range 0 to 511;
-	signal dif_dist_sq_2     : integer range 0 to 511;
-	signal dif_dist_sq_3     : integer range 0 to 511;
-	signal dif_dist_sq_4     : integer range 0 to 511;
+	signal dif_dist_sq_1     : integer range 0 to 511 * 10**3;
+	signal dif_dist_sq_2     : integer range 0 to 511 * 10**3;
+	signal dif_dist_sq_3     : integer range 0 to 511 * 10**3;
+	signal dif_dist_sq_4     : integer range 0 to 511 * 10**3;
 	
-	signal dif_dist_sqrt_1   : integer range 0 to 511 := 25;
-	signal dif_dist_sqrt_2   : integer range 0 to 511 := 25;
-	signal dif_dist_sqrt_3   : integer range 0 to 511 := 25;
-	signal dif_dist_sqrt_4   : integer range 0 to 511 := 25;
+	signal dif_dist_sqrt_1   : integer range 0 to 511 * 10**3 := 25 * 10**3;
+	signal dif_dist_sqrt_2   : integer range 0 to 511 * 10**3 := 25 * 10**3;
+	signal dif_dist_sqrt_3   : integer range 0 to 511 * 10**3 := 25 * 10**3;
+	signal dif_dist_sqrt_4   : integer range 0 to 511 * 10**3 := 25 * 10**3;
+	
+	signal dif_time_1        : integer range 0 to 127 * 10**3;
+	signal dif_time_2        : integer range 0 to 127 * 10**3;
+	signal dif_time_3        : integer range 0 to 127 * 10**3;
+	signal dif_time_4        : integer range 0 to 127 * 10**3;
 
 	-- Distance to Delay Calculation Signals
 	signal distance          : integer range 0 to 127;	
@@ -149,11 +154,16 @@ distance_to_delay : process (i_reset, i_clock, clockpulses,distance)
 begin
 	
 	if(i_reset = '1') then 
-		delay_1  <= 0;
-		delay_2  <= 0;
-		delay_3  <= 0;
-		delay_4  <= 0;
-		sqrt_est <= 25;
+		delay_1    <= 0;
+		delay_2    <= 0;
+		delay_3    <= 0;
+		delay_4    <= 0;
+		sqrt_est   <= 25;
+		
+		dif_time_1 <= 0;
+		dif_time_2 <= 0;
+		dif_time_3 <= 0;
+		dif_time_4 <= 0;
 		
 	elsif(rising_edge(i_clock)) then
 		if(clockpulses = 1) then
@@ -192,10 +202,16 @@ begin
 			dif_dist_sqrt_4  <= ((dif_dist_sqrt_4 + (dif_dist_sq_4 / dif_dist_sqrt_4))/2);		
 			
 		elsif(clockpulses = 6) then
-			delay_1    <= (10**6 * (dif_dist_sqrt_1 - distance)/ speed_sound);
-			delay_2    <= (10**6 * (dif_dist_sqrt_2 - distance)/ speed_sound);
-			delay_3    <= (10**6 * (dif_dist_sqrt_3 - distance)/ speed_sound);
-			delay_4    <= (10**6 * (dif_dist_sqrt_4 - distance)/ speed_sound);
+			dif_time_1    <= (10**3 * (dif_dist_sqrt_1 - distance)/ speed_sound);
+			dif_time_2    <= (10**3 * (dif_dist_sqrt_2 - distance)/ speed_sound);
+			dif_time_3    <= (10**3 * (dif_dist_sqrt_3 - distance)/ speed_sound);
+			dif_time_4    <= (10**3 * (dif_dist_sqrt_4 - distance)/ speed_sound);
+		
+		elsif(clockpulses = 7) then
+			delay_1       <= dif_time_4 - dif_time_3;
+			delay_2       <= dif_time_4 - dif_time_2;
+			delay_3       <= dif_time_4 - dif_time_1;
+			delay_4       <= dif_time_4;
 		end if;
 	
 	end if;
