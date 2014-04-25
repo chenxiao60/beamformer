@@ -4,9 +4,8 @@
  		<title>Sam Rohrer - Senior Tech</title>
   	<meta name="viewport" content="width=device-width, initial-scale=1.0">
   	<bootstrap.min.css>
-  	<link href="website/css/bootstrap.css" rel="stylesheet" media="screen">
-	<link href="website/css/bootstrap-responsive.css" rel="stylesheet">
-	<style>
+  	<link href="website/css/bootstrap.min.css" rel="stylesheet">
+	<style type="text/css">
 	body{
 		padding-left:-40px;
 		padding-right:-40px;
@@ -30,9 +29,9 @@
 	
 	<!-- ********************** Navbar ******************* -->
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-	  <div class = "container-fluid">
+	  <div class = "container">
 	  <div class="navbar-header">
-	    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+	    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 	      <span class="sr-only">Toggle navigation</span>
 	      <span class="icon-bar"></span>
 	      <span class="icon-bar"></span>
@@ -42,7 +41,7 @@
 	  </div>
 
 	  <!-- Collect the nav links, forms, and other content for toggling -->
-	  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	  <div class="navbar-collapse collapse">
 	    <ul class="nav navbar-nav">
 	      <li class = ""><a href="#about">About Me</a></li>
 	      <li class = ""><a href="#overview">Project Overview</a></li>
@@ -63,7 +62,6 @@
            <div class="container">
             <div class="carousel-caption">
               <h1>A Novel Beamforming Approach to Stereo Sound</h1>
-              <p class="lead">A photo of the completed system undergoing testing.</p>
             </div>
           </div>
         </div>
@@ -254,12 +252,8 @@ Because there were not sufficient input and output pins on the FPGA to perform a
     </footer>
 	</div>
 
-    <script src="website/js/bootstrap.js"></script>
-	<script>
-	$(document).ready(function() {
-	  $('.nav').onePageNav();
-	});
-	</script>
+    <script src="./Static Top Navbar Example for Bootstrap_files/jquery.min.js"></script>
+    <script src="./Static Top Navbar Example for Bootstrap_files/bootstrap.min.js"></script>
 
 </body>
 </html>
