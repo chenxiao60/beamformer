@@ -101,22 +101,22 @@ architecture Behavioral of nearfield_processing is
 	signal delay_4           : integer range 0 to 127;
 	signal us_clock          : std_logic;
 	
-	signal sqrt_est          : integer range 0 to 31 * 10**3;
+	signal sqrt_est          : integer range 0 to 31;
 	
-	signal dif_dist_sq_1     : integer range 0 to 511 * 10**3;
-	signal dif_dist_sq_2     : integer range 0 to 511 * 10**3;
-	signal dif_dist_sq_3     : integer range 0 to 511 * 10**3;
-	signal dif_dist_sq_4     : integer range 0 to 511 * 10**3;
+	signal dif_dist_sq_1     : integer range 0 to 511;
+	signal dif_dist_sq_2     : integer range 0 to 511;
+	signal dif_dist_sq_3     : integer range 0 to 511;
+	signal dif_dist_sq_4     : integer range 0 to 511;
 	
-	signal dif_dist_sqrt_1   : integer range 0 to 511 * 10**3 := 25 * 10**3;
-	signal dif_dist_sqrt_2   : integer range 0 to 511 * 10**3 := 25 * 10**3;
-	signal dif_dist_sqrt_3   : integer range 0 to 511 * 10**3 := 25 * 10**3;
-	signal dif_dist_sqrt_4   : integer range 0 to 511 * 10**3 := 25 * 10**3;
+	signal dif_dist_sqrt_1   : integer range 0 to 511 := 25;
+	signal dif_dist_sqrt_2   : integer range 0 to 511 := 25;
+	signal dif_dist_sqrt_3   : integer range 0 to 511 := 25;
+	signal dif_dist_sqrt_4   : integer range 0 to 511 := 25;
 	
-	signal dif_time_1        : integer range 0 to 127 * 10**3;
-	signal dif_time_2        : integer range 0 to 127 * 10**3;
-	signal dif_time_3        : integer range 0 to 127 * 10**3;
-	signal dif_time_4        : integer range 0 to 127 * 10**3;
+	signal dif_time_1        : integer range 0 to 127;
+	signal dif_time_2        : integer range 0 to 127;
+	signal dif_time_3        : integer range 0 to 127;
+	signal dif_time_4        : integer range 0 to 127;
 
 	-- Distance to Delay Calculation Signals
 	signal distance          : integer range 0 to 127;	
@@ -158,7 +158,7 @@ begin
 		delay_2    <= 0;
 		delay_3    <= 0;
 		delay_4    <= 0;
-		sqrt_est   <= 25 * 10**3;
+		sqrt_est   <= 25;
 		
 		dif_time_1 <= 0;
 		dif_time_2 <= 0;
@@ -167,10 +167,10 @@ begin
 		
 	elsif(rising_edge(i_clock)) then
 		if(clockpulses = 1) then
-			dif_dist_sq_1   <= 10**3 * (distance*distance + (1 * speaker_distance) * (1 * speaker_distance));
-			dif_dist_sq_2   <= 10**3 * (distance*distance + (2 * speaker_distance) * (2 * speaker_distance));			
-			dif_dist_sq_3   <= 10**3 * (distance*distance + (3 * speaker_distance) * (3 * speaker_distance));
-			dif_dist_sq_4   <= 10**3 * (distance*distance + (4 * speaker_distance) * (4 * speaker_distance));
+			dif_dist_sq_1   <= (distance*distance + (1 * speaker_distance) * (1 * speaker_distance));
+			dif_dist_sq_2   <= (distance*distance + (2 * speaker_distance) * (2 * speaker_distance));			
+			dif_dist_sq_3   <= (distance*distance + (3 * speaker_distance) * (3 * speaker_distance));
+			dif_dist_sq_4   <= (distance*distance + (4 * speaker_distance) * (4 * speaker_distance));
 			
 			dif_dist_sqrt_1 <= sqrt_est;
 			dif_dist_sqrt_2 <= sqrt_est;
@@ -202,16 +202,16 @@ begin
 			dif_dist_sqrt_4  <= ((dif_dist_sqrt_4 + (dif_dist_sq_4 / dif_dist_sqrt_4))/2);		
 			
 		elsif(clockpulses = 6) then
-			dif_time_1    <= (10**3 * (dif_dist_sqrt_1 - distance)/ speed_sound);
-			dif_time_2    <= (10**3 * (dif_dist_sqrt_2 - distance)/ speed_sound);
-			dif_time_3    <= (10**3 * (dif_dist_sqrt_3 - distance)/ speed_sound);
-			dif_time_4    <= (10**3 * (dif_dist_sqrt_4 - distance)/ speed_sound);
+			dif_time_1    <= ((dif_dist_sqrt_1 - distance)/ speed_sound);
+			dif_time_2    <= ((dif_dist_sqrt_2 - distance)/ speed_sound);
+			dif_time_3    <= ((dif_dist_sqrt_3 - distance)/ speed_sound);
+			dif_time_4    <= ((dif_dist_sqrt_4 - distance)/ speed_sound);
 		
 		elsif(clockpulses = 7) then
-			delay_1       <= dif_time_4 - dif_time_3;
-			delay_2       <= dif_time_4 - dif_time_2;
-			delay_3       <= dif_time_4 - dif_time_1;
-			delay_4       <= dif_time_4;
+			delay_1       <= (dif_time_4 - dif_time_3) * 10**6;
+			delay_2       <= (dif_time_4 - dif_time_2) * 10**6;
+			delay_3       <= (dif_time_4 - dif_time_1) * 10**6;
+			delay_4       <= (dif_time_4) * 10**6;
 		end if;
 	
 	end if;
