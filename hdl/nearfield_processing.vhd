@@ -15,11 +15,12 @@ entity nearfield_processing is
 	generic(
 	divisor           : integer := 50; -- difference between system clock 1 us 
 	speed_sound       : integer := 13397; -- in inches/second
-	speaker_distance  : integer := 2 * 10**3; -- in inches
+	speaker_distance  : integer := 2; -- in inches
 	sample_period     : integer := 22
 	);
 	
 	port(
+	-- Signals out of nearfield_processing
 	i_datain_r        : in     std_logic_vector (7 downto 0); -- 8 bit from memory
 	i_datain_l        : in     std_logic_vector (7 downto 0); -- 8 bit from memory
 	i_clock           : in     std_logic;                     -- 
@@ -36,6 +37,25 @@ entity nearfield_processing is
 end nearfield_processing;
 
 architecture Behavioral of nearfield_processing is
+
+--***************************** Delay Calculation ***************************--
+	component delay_calculation is
+		
+		generic(
+			divisor           : integer := 50; -- difference between system clock 1 us 
+			speed_sound       : integer := 13397; -- in inches/second
+			speaker_distance  : integer := 2 -- in inches
+		);
+	
+		port(
+			o_delay_1         :   out integer; 
+			o_delay_2         :   out integer;
+			o_delay_3         :   out integer;
+			o_delay_4         :   out integer
+		);
+		
+	end component;
+--*************************** End of Delay Calculation component ************--	
 
 	-- Holding Data
 	type   sr_array is array(natural range <>) of std_logic_vector(7 downto 0);
@@ -117,10 +137,31 @@ architecture Behavioral of nearfield_processing is
 	signal result_3          : std_logic_vector (8 downto 0);
 	signal result_4          : std_logic_vector (8 downto 0);
 	
+	signal delay_1           : integer range 0 to 127 := 1;
+	signal delay_2           : integer range 0 to 127 := 1;
+	signal delay_3           : integer range 0 to 127 := 1;
+	signal delay_4           : integer range 0 to 127 := 1;			
+	
 	--Clock Division
 	signal clockpulses       : integer range 0 to 127;
 	
 begin
+	--**************** Signal Processing Port Map ***********--	
+	
+		math : delay_calculation
+		generic map(
+			divisor             => 50,
+			speed_sound         => 13397,
+			speaker_distance    => 2
+			)
+
+		port map(
+			o_delay_1           => delay_1,
+			o_delay_2           => delay_2,
+			o_delay_3           => delay_3,
+			o_delay_4           => delay_4
+			);
+		
 
 --************** Tying output signals ******************--
 	

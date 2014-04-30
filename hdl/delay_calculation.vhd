@@ -15,14 +15,14 @@ entity delay_calculation is
 	generic(
 	divisor           : integer := 50; -- difference between system clock 1 us 
 	speed_sound       : integer := 13397; -- in inches/second
-	speaker_distance  : integer := 2; -- in inches
+	speaker_distance  : integer := 2 -- in inches
 	);
 	
 	port(
-	o_speaker_enable  :    out std_logic; --LDAC enable
-	o_dataout         :    out std_logic_vector (7 downto 0); -- 8 bit to be multiplexed 
-	o_channel         :    out std_logic_vector (4 downto 0);  -- 5 bit to select which DAC to enable
-	o_us_clock        :    out std_logic
+		o_delay_1     :   out integer; 
+		o_delay_2     :   out integer;
+		o_delay_3     :   out integer;
+		o_delay_4     :   out integer
 	);
 
 end delay_calculation;
@@ -38,23 +38,24 @@ architecture Behavioral of delay_calculation is
 	
 	signal sqrt_est          : integer range 0 to 31;
 	
-	signal dif_dist_sq_1     : integer range 0 to 511;
-	signal dif_dist_sq_2     : integer range 0 to 511;
-	signal dif_dist_sq_3     : integer range 0 to 511;
-	signal dif_dist_sq_4     : integer range 0 to 511;
+	signal dif_dist_sq_1     : ufixed (4 downto -6);
+	signal dif_dist_sq_2     : ufixed (4 downto -6);
+	signal dif_dist_sq_3     : ufixed (4 downto -6);
+	signal dif_dist_sq_4     : ufixed (4 downto -6);
 	
-	signal dif_dist_sqrt_1   : integer range 0 to 511 := 25;
-	signal dif_dist_sqrt_2   : integer range 0 to 511 := 25;
-	signal dif_dist_sqrt_3   : integer range 0 to 511 := 25;
-	signal dif_dist_sqrt_4   : integer range 0 to 511 := 25;
+	signal dif_dist_sqrt_1   : ufixed (4 downto -6);
+	signal dif_dist_sqrt_2   : ufixed (4 downto -6);
+	signal dif_dist_sqrt_3   : ufixed (4 downto -6);
+	signal dif_dist_sqrt_4   : ufixed (4 downto -6);
 	
-	signal dif_time_1        : integer range 0 to 127;
-	signal dif_time_2        : integer range 0 to 127;
-	signal dif_time_3        : integer range 0 to 127;
-	signal dif_time_4        : integer range 0 to 127;
+	signal dif_time_1        : ufixed (4 downto -6);
+	signal dif_time_2        : ufixed (4 downto -6);
+	signal dif_time_3        : ufixed (4 downto -6);
+	signal dif_time_4        : ufixed (4 downto -6);
 
 	-- Distance to Delay Calculation Signals
-	signal distance          : integer range 0 to 127;	
+	signal distance              : integer range 0 to 127;	
+	signal speaker_distance_std  : std_logic_vector (3 downto 0);
 	
 	--Clock Division
 	signal clockpulses       : integer range 0 to 127;
@@ -78,8 +79,8 @@ end process;
 
 --*************** Distance to integer **************--
 	
-	distance             <= i_distance; -- need to convert to ufixed
-	speaker_distance 
+	distance                <= i_distance; -- need to convert to ufixed
+	speaker_distance_std    <= conv_std_logic_vector(speaker_distance, 4);
 
 --*************** Distance to delay converter*******--
 distance_to_delay : process (i_reset, i_clock, clockpulses,distance)
