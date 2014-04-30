@@ -88,7 +88,7 @@ begin
 	end if;
 end process;
 
---*************** Distance to integer **************--
+--*************** Integer to fixed **************--
 	
 	distance                <= i_distance; -- need to convert to ufixed
 	speaker_distance_std    <= conv_std_logic_vector(speaker_distance, 5);
@@ -167,6 +167,12 @@ begin
 			delay_2       <= conv_integer(delay_2_fixed(4 downto 0));
 			delay_3       <= conv_integer(delay_3_fixed(4 downto 0));
 			delay_4       <= conv_integer(delay_4_fixed(4 downto 0));
+		
+		elsif(clockpulses = 9) then
+			o_delay_1     <= delay_1;
+			o_delay_2     <= delay_2;
+			o_delay_3     <= delay_3;
+			o_delay_4     <= delay_4;
 		end if;
 	
 	end if;
