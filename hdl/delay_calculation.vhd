@@ -36,7 +36,7 @@ architecture Behavioral of delay_calculation is
 	signal delay_4           : integer range 0 to 127;
 	signal us_clock          : std_logic;
 	
-	signal sqrt_est          : integer range 0 to 31;
+	signal sqrt_est          : ufixed (4 downto -6);
 	
 	signal dif_dist_sq_1     : ufixed (4 downto -6);
 	signal dif_dist_sq_2     : ufixed (4 downto -6);
@@ -53,12 +53,20 @@ architecture Behavioral of delay_calculation is
 	signal dif_time_3        : ufixed (4 downto -6);
 	signal dif_time_4        : ufixed (4 downto -6);
 
-	-- Distance to Delay Calculation Signals
+	-- Converting between fixed and std_logic Signals
 	signal distance               : integer range 0 to 127;	
 	signal speaker_distance_std   : std_logic_vector (4 downto 0);
+	signal speed_sound_std        : std_logic_vector (14 downto 0);
 	
 	signal distance_fixed         : ufixed (4 downto -6);
 	signal speaker_distance_fixed : ufixed (4 downto -6);
+	signal sqrt_est_fixed         : ufixed (4 downto -6);
+	signal speed_sound_fixed      : ufixed (14 downto -6);
+	
+	signal delay_1_fixed          : ufixed (4 downto -6);
+	signal delay_2_fixed          : ufixed (4 downto -6);
+	signal delay_3_fixed          : ufixed (4 downto -6);
+	signal delay_4_fixed          : ufixed (4 downto -6);
 	
 	--Clock Division
 	signal clockpulses       : integer range 0 to 127;
@@ -84,9 +92,11 @@ end process;
 	
 	distance                <= i_distance; -- need to convert to ufixed
 	speaker_distance_std    <= conv_std_logic_vector(speaker_distance, 5);
+	speed_sound_std         <= conv_std_logic_vector(speed_sound, 14);
 	
 	distance_fixed          <= distance & "000000";
 	speaker_distance_fixed  <= speaker_distance_std & "000000";
+	speed_sound_fixed       <= speed_sound_std & "000000";
 
 --*************** Distance to delay converter*******--
 distance_to_delay : process (i_reset, i_clock, clockpulses,distance)
@@ -97,7 +107,7 @@ begin
 		delay_2    <= 0;
 		delay_3    <= 0;
 		delay_4    <= 0;
-		sqrt_est   <= 25;
+		sqrt_est   <= "11001000000";
 		
 		dif_time_1 <= "00000000000";
 		dif_time_2 <= "00000000000";
@@ -106,10 +116,10 @@ begin
 		
 	elsif(rising_edge(i_clock)) then
 		if(clockpulses = 1) then
-			dif_dist_sq_1   <= (distance*distance + (1 * speaker_distance) * (1 * speaker_distance));
-			dif_dist_sq_2   <= (distance*distance + (2 * speaker_distance) * (2 * speaker_distance));			
-			dif_dist_sq_3   <= (distance*distance + (3 * speaker_distance) * (3 * speaker_distance));
-			dif_dist_sq_4   <= (distance*distance + (4 * speaker_distance) * (4 * speaker_distance));
+			dif_dist_sq_1   <= (distance_fixed*distance_fixed + (1 * speaker_distance_fixed) * (1 * speaker_distance_fixed));
+			dif_dist_sq_2   <= (distance_fixed*distance_fixed + (2 * speaker_distance_fixed) * (2 * speaker_distance_fixed));			
+			dif_dist_sq_3   <= (distance_fixed*distance_fixed + (3 * speaker_distance_fixed) * (3 * speaker_distance_fixed));
+			dif_dist_sq_4   <= (distance_fixed*distance_fixed + (4 * speaker_distance_fixed) * (4 * speaker_distance_fixed));
 			
 			dif_dist_sqrt_1 <= sqrt_est;
 			dif_dist_sqrt_2 <= sqrt_est;
@@ -141,16 +151,22 @@ begin
 			dif_dist_sqrt_4  <= ((dif_dist_sqrt_4 + (dif_dist_sq_4 / dif_dist_sqrt_4))/2);		
 			
 		elsif(clockpulses = 6) then
-			dif_time_1    <= ((dif_dist_sqrt_1 - distance)/ speed_sound_);
-			dif_time_2    <= ((dif_dist_sqrt_2 - distance)/ speed_sound);
-			dif_time_3    <= ((dif_dist_sqrt_3 - distance)/ speed_sound);
-			dif_time_4    <= ((dif_dist_sqrt_4 - distance)/ speed_sound);
+			dif_time_1    <= ((dif_dist_sqrt_1 - distance_fixed)/ speed_sound_fixed);
+			dif_time_2    <= ((dif_dist_sqrt_2 - distance_fixed)/ speed_sound_fixed);
+			dif_time_3    <= ((dif_dist_sqrt_3 - distance_fixed)/ speed_sound_fixed);
+			dif_time_4    <= ((dif_dist_sqrt_4 - distance_fixed)/ speed_sound_fixed);
 		
 		elsif(clockpulses = 7) then
-			delay_1       <= conv_integer(dif_time_4 - dif_time_3) * 10**6;
-			delay_2       <= conv_integer(dif_time_4 - dif_time_2) * 10**6;
-			delay_3       <= conv_integer(dif_time_4 - dif_time_1) * 10**6;
-			delay_4       <= conv_integer(dif_time_4) * 10**6;
+			delay_1_fixed <= (dif_time_4 - dif_time_3);
+			delay_2_fixed <= (dif_time_4 - dif_time_2);
+			delay_3_fixed <= (dif_time_4 - dif_time_1);
+			delay_4_fixed <= (dif_time_4);
+		
+		elsif(clockpulses = 8) then	
+			delay_1       <= conv_integer(delay_1_fixed(4 downto 0));
+			delay_2       <= conv_integer(delay_2_fixed(4 downto 0));
+			delay_3       <= conv_integer(delay_3_fixed(4 downto 0));
+			delay_4       <= conv_integer(delay_4_fixed(4 downto 0));
 		end if;
 	
 	end if;
