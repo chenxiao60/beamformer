@@ -1,4 +1,4 @@
------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------
 -- Created by Sam Rohrer                                                        --
 -- Beamforms in the nearfield based on a generic for distance                   --
 -- This is the actual processing that was written for the FPGA                  -- 
@@ -171,7 +171,7 @@ end process;
 
 --*************** Distance to integer **************--
 	
-	distance     <= conv_integer(i_distance);
+	distance     <= i_distance;
 
 --*************** Distance to delay converter*******--
 distance_to_delay : process (i_reset, i_clock, clockpulses,distance)
@@ -267,7 +267,7 @@ begin
 		elsif(sample_edges = 1) then
 			shift_register_r(1) <= i_datain_r;
 			shift_register_l(1) <= i_datain_l;
-		
+	
 		elsif(sample_edges = 2) then
 			shift_register_r(2) <= i_datain_r;
 			shift_register_l(2) <= i_datain_l; 
@@ -423,7 +423,7 @@ begin
 			data_r_1           <= X"00";
 			data_r_2           <= X"00";
 			data_r_3           <= X"00";
-			data_r_4           <= X"00";											
+			data_r_4           <= X"00";										
 			
 		else
 			--Output Conditions based on delays calculated or inserted
@@ -439,7 +439,7 @@ begin
 				data_r_4 <= shift_register_r(0);
 			end if;
 			
-			if(output_counter_r_1 = 2) then
+			if(output_counter_r_1 = 2) then
 				data_r_0 <= shift_register_r(1);
 			elsif(output_counter_r_1 = delay_1) then
 				data_r_1 <= shift_register_r(1);
@@ -566,7 +566,7 @@ begin
 		if(mux_counter = 0) then
 			o_dataout <= result_0 (8 downto 1);
 			mux_counter <= mux_counter + 1;	
-			o_speaker_enable <= '1';	
+			o_speaker_enable <= '1';
 			o_channel <= (0=>'0', OTHERS=>'1');
 
 		elsif (mux_counter = 1) then 
