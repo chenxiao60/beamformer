@@ -54,8 +54,11 @@ architecture Behavioral of delay_calculation is
 	signal dif_time_4        : ufixed (4 downto -6);
 
 	-- Distance to Delay Calculation Signals
-	signal distance              : integer range 0 to 127;	
-	signal speaker_distance_std  : std_logic_vector (3 downto 0);
+	signal distance               : integer range 0 to 127;	
+	signal speaker_distance_std   : std_logic_vector (4 downto 0);
+	
+	signal distance_fixed         : ufixed (4 downto -6);
+	signal speaker_distance_fixed : ufixed (4 downto -6);
 	
 	--Clock Division
 	signal clockpulses       : integer range 0 to 127;
@@ -80,7 +83,10 @@ end process;
 --*************** Distance to integer **************--
 	
 	distance                <= i_distance; -- need to convert to ufixed
-	speaker_distance_std    <= conv_std_logic_vector(speaker_distance, 4);
+	speaker_distance_std    <= conv_std_logic_vector(speaker_distance, 5);
+	
+	distance_fixed          <= distance & "000000";
+	speaker_distance_fixed  <= speaker_distance_std & "000000";
 
 --*************** Distance to delay converter*******--
 distance_to_delay : process (i_reset, i_clock, clockpulses,distance)
@@ -93,10 +99,10 @@ begin
 		delay_4    <= 0;
 		sqrt_est   <= 25;
 		
-		dif_time_1 <= 0;
-		dif_time_2 <= 0;
-		dif_time_3 <= 0;
-		dif_time_4 <= 0;
+		dif_time_1 <= "00000000000";
+		dif_time_2 <= "00000000000";
+		dif_time_3 <= "00000000000";
+		dif_time_4 <= "00000000000";
 		
 	elsif(rising_edge(i_clock)) then
 		if(clockpulses = 1) then
@@ -135,16 +141,16 @@ begin
 			dif_dist_sqrt_4  <= ((dif_dist_sqrt_4 + (dif_dist_sq_4 / dif_dist_sqrt_4))/2);		
 			
 		elsif(clockpulses = 6) then
-			dif_time_1    <= ((dif_dist_sqrt_1 - distance)/ speed_sound);
+			dif_time_1    <= ((dif_dist_sqrt_1 - distance)/ speed_sound_);
 			dif_time_2    <= ((dif_dist_sqrt_2 - distance)/ speed_sound);
 			dif_time_3    <= ((dif_dist_sqrt_3 - distance)/ speed_sound);
 			dif_time_4    <= ((dif_dist_sqrt_4 - distance)/ speed_sound);
 		
 		elsif(clockpulses = 7) then
-			delay_1       <= (dif_time_4 - dif_time_3) * 10**6;
-			delay_2       <= (dif_time_4 - dif_time_2) * 10**6;
-			delay_3       <= (dif_time_4 - dif_time_1) * 10**6;
-			delay_4       <= (dif_time_4) * 10**6;
+			delay_1       <= conv_integer(dif_time_4 - dif_time_3) * 10**6;
+			delay_2       <= conv_integer(dif_time_4 - dif_time_2) * 10**6;
+			delay_3       <= conv_integer(dif_time_4 - dif_time_1) * 10**6;
+			delay_4       <= conv_integer(dif_time_4) * 10**6;
 		end if;
 	
 	end if;
