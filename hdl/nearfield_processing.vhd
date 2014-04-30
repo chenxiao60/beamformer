@@ -7,6 +7,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
 library UNISIM;
 use UNISIM.VComponents.all;
 
@@ -14,12 +15,8 @@ entity nearfield_processing is
 	generic(
 	divisor           : integer := 50; -- difference between system clock 1 us 
 	speed_sound       : integer := 13397; -- in inches/second
-	speaker_distance  : integer := 2; -- in inches
-	sample_period     : integer := 22;
-	delay_1           : integer := 44; --(42+2)
-	delay_2           : integer := 74; --(72+2)
-	delay_3           : integer := 93; --(91+2)
-	delay_4           : integer := 99 --(97+2)
+	speaker_distance  : integer := 2 * 10**3; -- in inches
+	sample_period     : integer := 22
 	);
 	
 	port(
@@ -122,21 +119,40 @@ architecture Behavioral of nearfield_processing is
 					
 	
 	--Delays & Calculation Signals 
---	signal sample_period     : integer range 0 to 25;
---	signal delay_1           : integer range 0 to 127;
---	signal delay_2           : integer range 0 to 127;
---	signal delay_3           : integer range 0 to 127;
---	signal delay_4           : integer range 0 to 127;
+	signal delay_1           : integer range 0 to 127;
+	signal delay_2           : integer range 0 to 127;
+	signal delay_3           : integer range 0 to 127;
+	signal delay_4           : integer range 0 to 127;
 	signal us_clock          : std_logic;
-	signal ds_squareroot     : integer range 0 to 100;
-	signal ds_squared        : integer range 0 to 5000;
+	
+	signal sqrt_est          : integer range 0 to 31;
+	
+	signal dif_dist_sq_1     : integer range 0 to 511;
+	signal dif_dist_sq_2     : integer range 0 to 511;
+	signal dif_dist_sq_3     : integer range 0 to 511;
+	signal dif_dist_sq_4     : integer range 0 to 511;
+	
+	signal dif_dist_sqrt_1   : integer range 0 to 511 := 25;
+	signal dif_dist_sqrt_2   : integer range 0 to 511 := 25;
+	signal dif_dist_sqrt_3   : integer range 0 to 511 := 25;
+	signal dif_dist_sqrt_4   : integer range 0 to 511 := 25;
+	
+	signal dif_time_1        : integer range 0 to 127;
+	signal dif_time_2        : integer range 0 to 127;
+	signal dif_time_3        : integer range 0 to 127;
+	signal dif_time_4        : integer range 0 to 127;
+
+	-- Distance to Delay Calculation Signals
+	signal distance          : integer range 0 to 127;	
 	
 	--Clock Division
 	signal clockpulses       : integer range 0 to 127;
 	
 begin
-	--tying output signals
-	o_us_clock                       <= us_clock;
+
+--************** Tying output signals ******************--
+	
+	o_us_clock    <= us_clock;
 
 --************** From system clock to 1 us *************--
 clock_division : process(i_reset, i_clock)
@@ -153,37 +169,77 @@ begin
 	end if;
 end process;
 
---*************** Distance to delay converter*******--
-distance_to_delay : process (i_clock)
-begin
---		-- Delay 1 calculations
---		ds_squared <= (i_distance*i_distance + (speaker_distance)*(speaker_distance));
---		for n in 0 to 20 loop
---			ds_squareroot <=  ((50 + ds_squared/ds_squareroot)/2);
---		end loop;
---		delay_1 <= (ds_squareroot - i_distance)/ speed_sound;
---
---		-- Delay 2 calculations
---		ds_squared <= (i_distance*i_distance + (speaker_distance*2)*(speaker_distance*2));
---		for n in 0 to 20 loop
---			ds_squareroot <=  ((50 + ds_squared/ds_squareroot)/2);
---		end loop;
---		delay_2 <= (ds_squareroot - i_distance)/ speed_sound;
---		
---		-- Delay 3 calculations
---		ds_squared <= (i_distance*i_distance + (speaker_distance*3)*(speaker_distance*3));
---		for n in 0 to 20 loop
---			ds_squareroot <=  ((50 + ds_squared/ds_squareroot)/2);
---		end loop;
---		delay_3 <= (ds_squareroot - i_distance)/ speed_sound;
---
---		-- Delay 4 calculations
---		ds_squared <= (i_distance*i_distance + (speaker_distance*4)*(speaker_distance*4));
---		for n in 0 to 20 loop
---			ds_squareroot <=  ((50 + ds_squared/ds_squareroot)/2);
---		end loop;
---		delay_4 <= (ds_squareroot - i_distance)/ speed_sound;		
+--*************** Distance to integer **************--
+	
+	distance     <= conv_integer(i_distance);
 
+--*************** Distance to delay converter*******--
+distance_to_delay : process (i_reset, i_clock, clockpulses,distance)
+begin
+	
+	if(i_reset = '1') then 
+		delay_1    <= 0;
+		delay_2    <= 0;
+		delay_3    <= 0;
+		delay_4    <= 0;
+		sqrt_est   <= 25;
+		
+		dif_time_1 <= 0;
+		dif_time_2 <= 0;
+		dif_time_3 <= 0;
+		dif_time_4 <= 0;
+		
+	elsif(rising_edge(i_clock)) then
+		if(clockpulses = 1) then
+			dif_dist_sq_1   <= (distance*distance + (1 * speaker_distance) * (1 * speaker_distance));
+			dif_dist_sq_2   <= (distance*distance + (2 * speaker_distance) * (2 * speaker_distance));			
+			dif_dist_sq_3   <= (distance*distance + (3 * speaker_distance) * (3 * speaker_distance));
+			dif_dist_sq_4   <= (distance*distance + (4 * speaker_distance) * (4 * speaker_distance));
+			
+			dif_dist_sqrt_1 <= sqrt_est;
+			dif_dist_sqrt_2 <= sqrt_est;
+			dif_dist_sqrt_3 <= sqrt_est;
+			dif_dist_sqrt_4 <= sqrt_est;
+						
+		elsif(clockpulses = 2) then
+			dif_dist_sqrt_1  <= ((dif_dist_sqrt_1 + (dif_dist_sq_1 / dif_dist_sqrt_1))/2);
+			dif_dist_sqrt_2  <= ((dif_dist_sqrt_2 + (dif_dist_sq_2 / dif_dist_sqrt_2))/2);
+			dif_dist_sqrt_3  <= ((dif_dist_sqrt_3 + (dif_dist_sq_3 / dif_dist_sqrt_3))/2);
+			dif_dist_sqrt_4  <= ((dif_dist_sqrt_4 + (dif_dist_sq_4 / dif_dist_sqrt_4))/2);
+			
+		elsif(clockpulses = 3) then
+			dif_dist_sqrt_1  <= ((dif_dist_sqrt_1 + (dif_dist_sq_1 / dif_dist_sqrt_1))/2);
+			dif_dist_sqrt_2  <= ((dif_dist_sqrt_2 + (dif_dist_sq_2 / dif_dist_sqrt_2))/2);
+			dif_dist_sqrt_3  <= ((dif_dist_sqrt_3 + (dif_dist_sq_3 / dif_dist_sqrt_3))/2);
+			dif_dist_sqrt_4  <= ((dif_dist_sqrt_4 + (dif_dist_sq_4 / dif_dist_sqrt_4))/2);
+						
+		elsif(clockpulses = 4) then
+			dif_dist_sqrt_1  <= ((dif_dist_sqrt_1 + (dif_dist_sq_1 / dif_dist_sqrt_1))/2);
+			dif_dist_sqrt_2  <= ((dif_dist_sqrt_2 + (dif_dist_sq_2 / dif_dist_sqrt_2))/2);
+			dif_dist_sqrt_3  <= ((dif_dist_sqrt_3 + (dif_dist_sq_3 / dif_dist_sqrt_3))/2);
+			dif_dist_sqrt_4  <= ((dif_dist_sqrt_4 + (dif_dist_sq_4 / dif_dist_sqrt_4))/2);
+						
+		elsif(clockpulses = 5) then
+			dif_dist_sqrt_1  <= ((dif_dist_sqrt_1 + (dif_dist_sq_1 / dif_dist_sqrt_1))/2);
+			dif_dist_sqrt_2  <= ((dif_dist_sqrt_2 + (dif_dist_sq_2 / dif_dist_sqrt_2))/2);
+			dif_dist_sqrt_3  <= ((dif_dist_sqrt_3 + (dif_dist_sq_3 / dif_dist_sqrt_3))/2);
+			dif_dist_sqrt_4  <= ((dif_dist_sqrt_4 + (dif_dist_sq_4 / dif_dist_sqrt_4))/2);		
+			
+		elsif(clockpulses = 6) then
+			dif_time_1    <= ((dif_dist_sqrt_1 - distance)/ speed_sound);
+			dif_time_2    <= ((dif_dist_sqrt_2 - distance)/ speed_sound);
+			dif_time_3    <= ((dif_dist_sqrt_3 - distance)/ speed_sound);
+			dif_time_4    <= ((dif_dist_sqrt_4 - distance)/ speed_sound);
+		
+		elsif(clockpulses = 7) then
+			delay_1       <= (dif_time_4 - dif_time_3) * 10**6;
+			delay_2       <= (dif_time_4 - dif_time_2) * 10**6;
+			delay_3       <= (dif_time_4 - dif_time_1) * 10**6;
+			delay_4       <= (dif_time_4) * 10**6;
+		end if;
+	
+	end if;
+		
 		--********** Manually Set Delays ****************--
 		
 --		delay_1 <= (22+2); --42

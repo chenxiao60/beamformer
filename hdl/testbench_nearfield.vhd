@@ -42,11 +42,7 @@ architecture Behavioral of testbench_nearfield is
 		divisor           : integer := 50; -- difference between system clock 1 us 
 		speed_sound       : integer := 13397; -- in inches/second
 		speaker_distance  : integer := 2; -- in inches
-		sample_period     : integer := 22;
-		delay_1           : integer := 44; --(42+2)
-		delay_2           : integer := 74; --(72+2)
-		delay_3           : integer := 93; --(91+2)
-		delay_4           : integer := 99 --(97+2)
+		sample_period     : integer := 22
 		);
 	
 		port(
@@ -94,7 +90,7 @@ begin
 	but_reset <= '0', '1' after 100 ns, '0' after 1000 ns;
 	pin_int   <= '0';
 	
-	
+	swt_distance <= "11000";
 	
 	-- *************** Test Data Being Generated **********--
 	generate_data: process (sample_clock)
@@ -161,11 +157,7 @@ begin
 		divisor             => 50,
 		speed_sound         => 13397,
 		speaker_distance    => 2,
-		sample_period       => 22,
-		delay_1             => 44, --(42+2)
-		delay_2             => 74, --(72+2)
-		delay_3             => 93, --(91+2)
-		delay_4             => 99 --(97+2)
+		sample_period       => 22
 		)
 
 	port map(
