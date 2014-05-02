@@ -1,7 +1,7 @@
 ----------------------------------------------------------------------------------
 -- Created by Sam Rohrer                                                        --
 -- Beamforms in the nearfield based on a generic for distance                   --
--- This is the actual processing that was written for the FPGA                  -- 
+-- This is the actual processing that was written for the FPGA                  --
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -23,7 +23,7 @@ entity nearfield_processing is
 	-- Signals out of nearfield_processing
 	i_datain_r        : in     std_logic_vector (7 downto 0); -- 8 bit from memory
 	i_datain_l        : in     std_logic_vector (7 downto 0); -- 8 bit from memory
-	i_clock           : in     std_logic;                     -- 
+	i_clock           : in     std_logic;                     -- system clock off of board
 	i_distance        : in     std_logic_vector (4 downto 0); -- Switches determine distance
 	i_reset           : in     std_logic ;                    -- To reset the entire system
 	i_sampleclock     : in     std_logic ;                    -- Rate at which the music is playing

@@ -8,6 +8,10 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
+library ieee_proposed;
+use ieee_proposed.fixed_float_types.all; -- ieee_proposed for VHDL-93 version
+use ieee_proposed.fixed_pkg.all; -- ieee_proposed for compatibility version 
+
 library UNISIM;
 use UNISIM.VComponents.all;
 
