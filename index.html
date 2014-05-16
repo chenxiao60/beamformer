@@ -65,7 +65,9 @@
 	   </div>
 
 	<div class ="container">   
-	<a name = "about"></a>   
+	<a name = "about"></a> 
+	<div class="clearfix"></div>
+	<br><br>  
 	<hr class="featurette-divider">
 	<h2> About Me </h2>
 	<p> I am a senior at Thomas Jefferson High School for Science and Technology in the Microelectronics Research Lab. This is my project about beamforming that I've been working on for a few years.</p>
@@ -74,13 +76,15 @@
 	
 	
 	<a name = "overview"></a>
-	<br>
+	<div class="clearfix"></div>
+	<br><br>
     <hr class="featurette-divider">
 	<h2> Project Overview </h2>
 	<p>The goal of this ongoing project is to determine the best method of creating stereo sound and separation within the footprint of a tablet in the near-field (less than six feet from the user). Beamforming was used to achieve this; however, the best method of near-field beamforming was unknown. Three methods were simulated and compared using MATLAB: point and sum (a new method developed during research), delay and sum beamforming, and no beamforming. Simulation results showed that point and sum beamforming was the superior method. This methodology was then tested in hardware. To do this, the processing was written in VHDL and synthesized onto a FPGA. A speaker enclosure was built to house the five speakers used to create the beamforming array. The outputs of the FPGA were multiplexed into DACs then amplified and played through speakers. Results suggest the system is functioning correctly by separating the sound and many users have confirmed this fact. It is clear that point and sum beamforming is the best method for near-field beamforming. Also, stereo separation can be created in the footprint of a tablet with this method. Applications of this research abound in the fields of medicine, radar and cellular communications.</p>
 	
 	<a name = "beamforming"></a>
-	<br>
+	<div class="clearfix"></div>
+	<br><br>
     <hr class="featurette-divider">
 	<h2> Beamforming </h2>
 	<p>This research aims to take a novel approach to creating stereo isolation for a tablet environment within the footprint of the tablet by evaluating the different methods of beamforming and then applying the chosen method to a speaker system. Stereo isolation occurs in headphones as the channels are separated completely, and this isolation is critical to a strong stereo image. Although beamforming has been a part of radar systems for many years, it has only recently seen use in acoustic applications. As of now the two main applications of acoustic beamforming are: sound bars used in home theaters that use some beamforming to create a faux surround sound effect, and large conference room microphones that isolate individual speakers. However, there are no commercial products that utilize beamforming to create stereo isolation within the footprint of a tablet. Furthermore, there is no established research setting out a methodology for attempting beamforming in such a small field of space.</p>
@@ -91,7 +95,8 @@
 	
 
 	<a name = "simulations"></a>
-	<br>
+	<div class="clearfix"></div>
+	<br><br>
     <hr class="featurette-divider">
 	<h2> Simulations </h2>
 	<p> The purpose of simulation was to see if there was a difference in directionality and magnitude between three cases: point and sum beamforming, delay and sum beamforming, and no beamforming. Point and sum beamforming uses the Pythagorean theorem to calculate the delay based on the dimensions of the speaker array, the distance to the user and the speed of sound. On the other hand, delay and sum beamforming creates a wave-front where each delay is a multiple of the first (x, 2x, 3x ... etc.) Finally, a system with no beamforming has no delays or summing built in, each wave is simultaneously driven out of each speaker.</p>
@@ -202,7 +207,8 @@
 	</div>
 
 	<a name = "fpga_design"></a>
-	<br>
+	<div class="clearfix"></div>
+	<br><br>
     <hr class="featurette-divider">
 	<h2> FPGA Designs </h2>
 	<p>Although the point and sum methodology had been developed in simulation, it also required testing in hardware to confirm its functionality for acoustic applications. The processing hardware (FPGA design) was written in Very High Speed Integrated Circuit Hardware Description Language (VHDL) with four main processes: the delay calculator, clock division, data processing and an output selector. A block diagram is shown in Figure 12.</p>
@@ -237,12 +243,12 @@ Because there were not sufficient input and output pins on the FPGA to perform a
 	</div>	
 	
 	<a name = "design_files"></a>
-	<br>
+	<div class="clearfix"></div>
+	<br><br>
     <hr class="featurette-divider">
 	<h2> Design Files </h2>
 	<p>There are simulation files (written in MATLAB) and FPGA design files (written in VHDL). Both are hosted on GitHub and linked below. Prior experimentation files and schematics can be found on my earlier website.</p>
 	<p> <a href = "https://github.com/srohrer32/beamformer"> Design files </a></p>
-	<p> <a href = "http://www.srohrer.x10host.com/home/nearfield.html"> Old Designs </a></p>
     <hr class="featurette-divider">
 	
 	<!-- ***************** Footer ********************** -->
